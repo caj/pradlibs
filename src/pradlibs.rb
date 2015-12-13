@@ -1,3 +1,5 @@
+# ADDING LINES
+
 class PradLibs
   def process text
     unexpected_message unless prad_valid? text
@@ -24,11 +26,9 @@ class PradLibs
 
   def failwords
     [
-      "WUT R U DOIN???",
-      "lol cut it out srsly",
-      "pssst ---->",
-      "No. No, no, no.",
-      "readme -->"
+      "WUT R U DOIN???", # CHANGING LINES
+
+      #REMOVING LINES
     ]
   end
 end
