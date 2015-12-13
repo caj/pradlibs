@@ -6,7 +6,7 @@ describe PradLibs do
   end
 
   describe '#prad_valid?' do
-    let(:good_url) { "www.example.com/text/blah/whatever.json" }
+    let(:good_url) { "https://github.com/somegroup/somerepo/pull/0000" }
     let(:bad_url) { "i have no idea what im doing" }
 
     context 'good args' do

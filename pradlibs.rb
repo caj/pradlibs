@@ -4,7 +4,8 @@ class PradLibs
   end
 
   def prad_valid? str
-    false
+    return false unless str
+    !!str.match(/https:\/\/github.com\/.*\/.*\/pull\/\d*/)
   end
 
   private

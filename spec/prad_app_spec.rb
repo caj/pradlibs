@@ -22,7 +22,7 @@ describe 'Pull Request Annoying Delivery Libraries' do
 
     context "good args" do
       it "spits out a buzzfeedish title vaguely related to the PR" do
-        expect(true).to be false
+        pending
       end
     end
   end
