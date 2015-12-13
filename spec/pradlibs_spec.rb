@@ -15,5 +15,12 @@ describe 'Pull Request Annoying Data Libraries' do
       post '/'
       expect(last_response).to be_ok
     end
+
+    context "bad args" do
+      it "tell the user they're doin' it wrong" do
+        post '/'
+        expect(last_response.body).to include 'usage'
+      end
+    end
   end
 end
