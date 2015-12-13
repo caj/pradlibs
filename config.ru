@@ -1,4 +1,4 @@
 require_relative './pradlibs.rb'
 
-run PradLibs
+run PradApp
 

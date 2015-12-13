@@ -1,13 +1,11 @@
-ENV['RACK_ENV'] = 'test'
+require 'spec_helper'
+require_relative '../prad_app.rb'
 
-require_relative '../pradlibs.rb'
-require 'rack/test'
-
-describe 'Pull Request Annoying Data Libraries' do
+describe 'Pull Request Annoying Delivery Libraries' do
   include Rack::Test::Methods
 
   def app
-    PradLibs
+    PradApp
   end
 
   describe "#post" do
