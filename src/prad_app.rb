@@ -1,5 +1,6 @@
 require 'sinatra'
 require_relative 'pradlibs.rb'
+Dir[File.join(File.dirname(__FILE__), '**', '*.rb')].each { |f| require f }
 
 class PradApp < Sinatra::Base
   before do
