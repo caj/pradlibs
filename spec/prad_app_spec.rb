@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_relative '../prad_app.rb'
 
 describe 'Pull Request Annoying Delivery Libraries' do
   include Rack::Test::Methods
@@ -18,6 +17,12 @@ describe 'Pull Request Annoying Delivery Libraries' do
       it "tell the user they're doin' it wrong" do
         post '/'
         expect(last_response.body).to include 'usage'
+      end
+    end
+
+    context "good args" do
+      it "spits out a buzzfeedish title vaguely related to the PR" do
+        expect(true).to be false
       end
     end
   end

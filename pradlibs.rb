@@ -3,10 +3,14 @@ class PradLibs
     unexpected_message unless prad_valid? text
   end
 
+  def prad_valid? str
+    false
+  end
+
   private
 
   def usage
-    " | usage: <link to PR> [name]"
+    " | usage: <link to PR>"
   end
 
   def unexpected_message
@@ -25,9 +29,5 @@ class PradLibs
       "No. No, no, no.",
       "readme -->"
     ]
-  end
-
-  def prad_valid? str
-    false
   end
 end
