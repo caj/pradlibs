@@ -8,6 +8,8 @@ describe 'Pull Request Annoying Delivery Libraries' do
   end
 
   describe "#post" do
+    let(:good_url) { "https://github.com/caj/pradlibs/pull/2" }
+
     it "can recieve a POST request" do
       post '/'
       expect(last_response).to be_ok
@@ -22,7 +24,8 @@ describe 'Pull Request Annoying Delivery Libraries' do
 
     context "good args" do
       it "spits out a buzzfeedish title vaguely related to the PR" do
-        pending
+        post '/', text: good_url
+        ap last_response.body
       end
     end
   end

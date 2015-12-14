@@ -27,7 +27,7 @@ class PradLibs
       o = Octokit::Client.new
     end
 
-    PradLibMessage.new(o.pull_request repo, num)
+    PradLibMessage.new(o.pull_request repo, num).message
   end
 
   def parse str
