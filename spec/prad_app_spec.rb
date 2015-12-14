@@ -21,8 +21,7 @@ describe 'Pull Request Annoying Delivery Libraries' do
     end
 
     context "good args" do
-      it "spits out a buzzfeedish title vaguely related to the PR" do
-        pending
+      xit "spits out a buzzfeedish title vaguely related to the PR" do
       end
     end
   end
