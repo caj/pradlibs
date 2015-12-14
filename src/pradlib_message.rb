@@ -69,15 +69,18 @@ MESSAGES = {
   regular: [
     "PREFIX GROUP's TOTAL most WANTED changes for REPO",
     "GROUP, GROUP, and GROUP unite in support of these TOTAL changes to REPO",
+    "Try not to cry when you see these TOTAL changes"
   ],
 
   net_gain: [
     "NET BADJ ADDWORD that SUFFIX",
+    "NET GADJ ADDWORD that SUFFIX"
   ],
 
   net_loss: [
     "DEL GADJ, GADJ DELWORD that SUFFIX",
     "PREFIX the BADJ DELWORD which you'll love to see DELWORD2!",
+    "Watch USER become an inspiration with NET DELWORD"
   ],
 
   only_gain: [
