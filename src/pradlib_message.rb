@@ -16,20 +16,18 @@ class PradLibMessage
   def create_message
     m = @pool.sample
     keywords = @libs.keys.map(&:to_s)
+    remove_previous_space = %w(. ? ! , ' ( ) )
     message = m.scan(/([\w]+|,|'\w|\?|\.)/).to_a.flatten.inject('') do |acc, w|
       if keywords.include? w
-        acc + @libs[w.to_sym].sample.to_s + ' '
-      elsif w == "'s"
-        acc[0..-2] + w + ' '
+        acc + @libs[w.to_sym].sample.to_s.capitalize + ' '
+      elsif remove_previous_space.include?(w[0])
+        acc[0..-2] + w.capitalize + ' '
       else
-        acc + w + ' '
+        acc + w.capitalize + ' '
       end
     end
 
-    @message = message
-      .split
-      .map(&:capitalize).inject('') { |acc, x| if ["'", ","].include?(x[0]) then acc + x else acc + ' ' + x end }
-      .strip
+    @message = message.strip
 
     @message = {
       response_type: "in_channel",
