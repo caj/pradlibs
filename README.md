@@ -36,6 +36,6 @@ The Votes Are In: A Clan Of Ninja Warriors's 10 Most Wanted Changes For Pradlibs
   - `https://blah-blah.herokuapp.com` -> `https://blah-blah.herokuapp.com/command`
   - actual slash command text (ex: `/buzz`) is up to you
 5. Make a [GitHub access token](https://github.com/settings/tokens) thing, copy him too
-6. heroku config:add PRADLIBS_ACCESS_TOKEN=<PASTE_HIM>
+6. `heroku config:add PRADLIBS_ACCESS_TOKEN=<PASTE HIM>`
 7. `git push heroku master`
 8. Fill your slack channels with `/<cmd> <link to PR>` and watch the code reviews you asked for pour in!
