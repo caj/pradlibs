@@ -7,7 +7,7 @@ class PradApp < Sinatra::Base
     @pl = PradLibs.new
   end
   post '/command' do
-    respond_with :json
+    content_type :json
 
     status 200
 
