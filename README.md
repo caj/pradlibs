@@ -34,7 +34,7 @@ Breaking News! Our Nation's 3 Most Wanted Changes For Pradlibs
 3. Navigate [over here](https://slack.com/settings) -> Slash Commands -> Add
 4. Paste that junk in the URL field, but throw `/command` on the end of it. Also do the rest of that page.
   - `https://blah-blah.herokuapp.com` -> `https://blah-blah.herokuapp.com/command`
-  - actual slash command text (ex: `/buzz`) is up to you,
+  - actual slash command text (ex: `/buzz`) is up to you.
 5. Make a [GitHub access token](https://github.com/settings/tokens) thing, copy him too.
 6. `heroku config:add PRADLIBS_ACCESS_TOKEN=<PASTE HIM>`
 7. `git push heroku master`
