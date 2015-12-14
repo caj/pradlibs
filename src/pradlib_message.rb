@@ -15,7 +15,7 @@ class PradLibMessage
   def create_message
     m = @pool.sample
     keywords = @libs.keys.map(&:to_s)
-    message = m.scan(/([\w]+|,|'s)/).to_a.flatten.inject('') do |acc, w|
+    message = m.scan(/([\w]+|,|'s|?|\.)/).to_a.flatten.inject('') do |acc, w|
       if keywords.include? w
         acc + @libs[w.to_sym].sample.to_s + ' '
       elsif w == "'s"
