@@ -27,7 +27,7 @@ class PradLibMessage
 
     @message = message.split.map(&:capitalize).inject('') { |acc, x| if x == ',' then acc + x else acc + ' ' + x end }
 
-    {
+    JSON.generate({
       response_type: "in_channel",
       text: @message.strip!,
       attachments: [
@@ -35,7 +35,7 @@ class PradLibMessage
           text: ""
         }
       ]
-    }
+    })
   end
 
   def setup_adlibs
