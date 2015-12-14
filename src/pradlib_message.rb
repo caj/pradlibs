@@ -27,7 +27,7 @@ class PradLibMessage
 
     @message = message.split.map(&:capitalize).inject('') { |acc, x| if x == ',' then acc + x else acc + ' ' + x end }
 
-    JSON.generate({
+    @message = JSON.generate({
       response_type: "in_channel",
       text: @message.strip!,
       attachments: [
