@@ -1,19 +1,9 @@
 require 'spec_helper'
 
 describe PradLibMessage do
-  let(:mash) do
-    Hashie::Mash.new({
-      repo: 'cool-repo',
-      adds: 10,
-      dels: 5,
-      net_change: 5,
-      tot_change: 15,
-      comment_count: 3,
-      pr_submitter: 'caj'
-    })
-  end
+  let!(:pr) { Octokit.pull_request 'caj/pradlibs', 2 }
 
   it 'is initializable' do
-    expect { PradLibMessage.new mash }.not_to raise_error
+    expect { PradLibMessage.new pr }.not_to raise_error
   end
 end

@@ -22,17 +22,4 @@ describe PradLibs do
     end
   end
 
-  describe '#adlibs' do
-    context 'good args' do
-      it 'extracts the relevant bits from the PR and returns them in a mash' do
-        expect(PradLibs.new.adlibs(good_url).keys).to include 'repo'
-      end
-    end
-
-    context 'bad args' do
-      it 'returns an empty mash' do
-        expect(PradLibs.new.adlibs(bad_url).keys).to be_empty
-      end
-    end
-  end
 end

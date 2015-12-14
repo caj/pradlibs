@@ -10,35 +10,22 @@ class PradLibs
     end
   end
 
+  # does it LOOK like a github pr url?
   def prad_valid? str
     return false unless str
-    !!str.match(/https:\/\/github.com\/.*\/.*\/pull\/\d*/)
-  end
-
-  def adlibs url
-    mash = Hashie::Mash.new(
-      JSON.parse(HTTParty.get(GitParser.convert(url)).body)
-    )
-
-    Hashie::Mash.new({
-      repo: mash.base.repo.name,
-      adds: mash.additions,
-      dels: mash.deletions,
-      net_change: mash.additions - mash.deletions,
-      tot_change: mash.additions + mash.deletions,
-      comment_count: mash.comments,
-      pr_submitter: mash.user.login,
-    })
-  rescue
-    Hashie::Mash.new
+    !!parse(str)
   end
 
   private
 
   def message text
-    payload = adlibs text
-    return unexpected_message if payload.empty?
-    PradLibMessage.new(payload)
+    repo, num = parse text
+    PradLibMessage.new(Octokit.pull_request repo, num)
+  end
+
+  def parse str
+    str.match /https:\/\/github.com\/(.*\/.*)\/pull\/(\d*)/
+    [$~[1], $~[2].to_i] if $~
   end
 
   def usage
