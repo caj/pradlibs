@@ -26,7 +26,7 @@ With PradLibs, you can turn this:
 
 ### into this!
 
-[img4](http://i.imgur.com/TjJE8K0.png)
+![img4](http://i.imgur.com/TjJE8K0.png)
 
 ## Yes. I want this. I want it so bad.
 
