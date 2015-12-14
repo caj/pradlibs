@@ -7,6 +7,7 @@ class PradLibMessage
     @pr = octokit
     setup_adlibs
     setup_pool
+    setup_images
     create_message
   end
 
@@ -25,12 +26,36 @@ class PradLibMessage
       end
     end
 
-    @message = message.split.map(&:capitalize).inject('') { |acc, x| if ["'", ","].include?(x[0]) then acc + x else acc + ' ' + x end }
+    @message = message
+      .split
+      .map(&:capitalize).inject('') { |acc, x| if ["'", ","].include?(x[0]) then acc + x else acc + ' ' + x end }
+      .strip
 
     @message = {
       response_type: "in_channel",
-      text: @message.strip,
+      text: @pr.html_url,
+      attachments: [
+        {
+            fallback: @message,
+            author_name: @pr.user.login,
+            author_link: @pr.user.html_url,
+            author_icon: @pr.user.avatar_url,
+            title: @message,
+            title_link: @pr.html_url,
+            text: "##{@pr.number}: #{@pr.title}",
+            thumb_url: @images.sample,
+        }
+      ]
     }
+  end
+
+  def setup_images
+    categories = ['animals', 'architecture', 'nature', 'people', 'tech']
+    @images = categories.collect { |c| "http://placeimg.com/75/75/#{c}.png" }
+  end
+
+  def get_image
+    @images.sample
   end
 
   def setup_adlibs
