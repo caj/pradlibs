@@ -26,7 +26,16 @@ class PradLibMessage
     end
 
     @message = message.split.map(&:capitalize).inject('') { |acc, x| if x == ',' then acc + x else acc + ' ' + x end }
-    @message.strip!
+
+    {
+      response_type: "in_channel",
+      text: @message.strip!,
+      attachments: [
+        {
+          text: ""
+        }
+      ]
+    }
   end
 
   def setup_adlibs
@@ -72,7 +81,7 @@ MESSAGES = {
   ],
 
   net_loss: [
-    "DEL GADJ, GADJ DELWORD SUFFIX",
+    "DEL GADJ, GADJ DELWORD that SUFFIX",
     "PREFIX the BADJ DELWORD which you'll love to see DELWORD2!",
   ],
 
@@ -83,6 +92,7 @@ MESSAGES = {
   only_loss: [
     "USER DELWORD2 DEL lines from REPO, and you won't *believe* what they did next!",
     "DEL facts that prove the world isn't such a bad place",
+    "REPO repo is slimming down for summer with these TOTAL GADJ secrets"
   ],
 
 }
@@ -92,7 +102,7 @@ BASE_ADLIBS = {
     "you won't believe this!",
     "staff pick:",
     "breaking news!",
-    "the votes are in, and"
+    "the votes are in:"
   ],
 
   GROUP: [

@@ -6,7 +6,7 @@ class PradApp < Sinatra::Base
   before do
     @pl = PradLibs.new
   end
-  post '/' do
+  post '/command' do
     status 200
 
     text = params[:text]
