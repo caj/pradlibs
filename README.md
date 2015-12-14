@@ -1,4 +1,4 @@
-### Pull Request Annoyance Delivery Libraries
+#### Pull Request Annoyance Delivery Libraries
 
 Ever have trouble getting the other members of your team interested in your PRs?
 
@@ -10,24 +10,25 @@ Do you feel you need to entice them with the promise of short code review, just 
 ![img3](http://i.imgur.com/OHuBnD3.jpg)
 
 
-## You're doing it wrong!
+### You're doing it wrong!
 
-Stop pleading and grab their attention with PradLibs!
+# Stop pleading and grab their attention with PradLibs!
 
-With PradLibs, you can turn this:
+# With PradLibs, you can turn this:
 ```
 # in slack
 /buzz https://github.com/caj/pradlibs/pull/1
 ```
 
-into this!
-
 ```
-buzz BOT [9:59 PM]
-Breaking News! Our Nation's 3 Most Wanted Changes For Pradlibs
-```
+/buzz https://github.com/caj/pradlibs/pull/5
+``
 
-## Yes. I want this. I want it so bad.
+### into this!
+
+[img4](http://i.imgur.com/TjJE8K0.png)
+
+#### Yes. I want this. I want it so bad.
 
 1. Fork it and navigate there
 2. `heroku create` -> copy dat URL, yo
