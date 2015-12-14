@@ -21,7 +21,7 @@ class PradLibs
   def message text
     repo, num = parse text
 
-    if ENV['PRADLIBS_TOKEN']
+    if ENV['PRADLIBS_ACCESS_TOKEN']
       o = Octokit::Client.new access_token: ENV['PRADLIBS_ACCESS_TOKEN']
     else
       o = Octokit::Client.new
