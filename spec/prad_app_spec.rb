@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Pull Request Annoying Delivery Libraries' do
+describe 'Pull Request Annoyance Delivery Libraries' do
   include Rack::Test::Methods
 
   def app
