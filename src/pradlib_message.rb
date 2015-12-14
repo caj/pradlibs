@@ -69,15 +69,23 @@ MESSAGES = {
   regular: [
     "PREFIX GROUP's TOTAL most WANTED changes for REPO",
     "GROUP, GROUP, and GROUP unite in support of these TOTAL changes to REPO",
+    "try not to cry when you see these TOTAL changes",
+    "scientists uncover DEL BADJ DELWORD and ADD GADJ ADDWORD that SUFFIX",
+    "USER made TOTAL changes to REPO, and you won't believe what happened!",
+    "what happens when you make TOTAL changes to REPO? USER found out, and you can too.",
+    "USER ADDWORD2 ADD things, then DELWORD2 DEL things. what happened next will shock you",
+    "TOTAL GADJ ways to make REPO a better place"
   ],
 
   net_gain: [
     "NET BADJ ADDWORD that SUFFIX",
+    "NET GADJ ADDWORD that SUFFIX"
   ],
 
   net_loss: [
     "DEL GADJ, GADJ DELWORD that SUFFIX",
     "PREFIX the BADJ DELWORD which you'll love to see DELWORD2!",
+    "watch USER become an inspiration with NET DELWORD"
   ],
 
   only_gain: [
@@ -134,6 +142,7 @@ BASE_ADLIBS = {
     "are really fundamental truths of the universe",
     "will confound and surprise you",
     "you have to see to believe",
-
+    "will change your life",
+    "will leave you breathless",
   ]
 }
