@@ -25,7 +25,7 @@ class PradLibMessage
       end
     end
 
-    @message = message.split.map(&:capitalize).inject('') { |acc, x| if x == ',' then acc + x else acc + ' ' + x end }
+    @message = message.split.map(&:capitalize).inject('') { |acc, x| if ["'", ","].include?(x[0]) then acc + x else acc + ' ' + x end }
 
     @message = {
       response_type: "in_channel",
