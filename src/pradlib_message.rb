@@ -16,18 +16,10 @@ class PradLibMessage
   def create_message
     m = @pool.sample
     keywords = @libs.keys.map(&:to_s)
-    remove_previous_space = %w(. ? ! , ' ( ) )
-    message = m.scan(/([\w]+|,|'\w|\?|\.)/).to_a.flatten.inject('') do |acc, w|
-      if keywords.include? w
-        acc + @libs[w.to_sym].sample.to_s.capitalize + ' '
-      elsif remove_previous_space.include?(w[0])
-        acc[0..-2] + w.capitalize + ' '
-      else
-        acc + w.capitalize + ' '
-      end
-    end
 
-    @message = message.strip
+    @message = m.split.to_a.flatten.inject('') do |acc, w|
+      acc + ' ' + w.split(/(\W)/).map { |wpart| [*@libs[wpart.to_sym]].sample.to_s.split.map { |x| x.length == 1 ? x : x.capitalize }.join(' ') }.join
+    end.strip
 
     @message = {
       response_type: "in_channel",
@@ -67,7 +59,9 @@ class PradLibMessage
     }
 
     # "at"libs... ah ha ha
-    @libs = @data.merge BASE_ADLIBS.dup
+    # returns nonexistant keys right back
+    @libs = Hash.new { |h, k| k }
+    @libs.merge!(@data.merge(BASE_ADLIBS.dup))
   end
 
   def setup_pool
