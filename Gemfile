@@ -1,9 +1,11 @@
 source 'https://rubygems.org'
 
 gem 'rack'
+gem 'rack-test'
 gem 'sinatra'
 gem 'foreman'
 gem 'httparty'
 gem 'awesome_print'
 gem 'hashie'
 gem 'octokit', '~> 4.0'
+gem 'rspec'
