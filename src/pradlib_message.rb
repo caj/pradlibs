@@ -33,7 +33,7 @@ class PradLibMessage
             title: @message,
             title_link: @pr.html_url,
             text: "##{@pr.number}: #{@pr.title}",
-            thumb_url: @images.sample,
+            thumb_url: get_image,
         }
       ]
     }
