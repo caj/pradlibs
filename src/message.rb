@@ -1,83 +1,84 @@
 require 'octokit'
 
-class PradLibMessage
-  attr_reader :message
+module PradLibs
+  class Message
+    attr_reader :message
 
-  def initialize octokit
-    @pr = octokit
-    setup_adlibs
-    setup_pool
-    setup_images
-    create_message
-  end
-
-  private
-
-  def create_message
-    m = @pool.sample
-    keywords = @libs.keys.map(&:to_s)
-
-    @message = m.split.to_a.flatten.inject('') do |acc, w|
-      acc + ' ' + w.split(/(\W)/).map { |wpart| [*@libs[wpart.to_sym]].sample.to_s.split.map { |x| x.length == 1 ? x : x.capitalize }.join(' ') }.join
-    end.strip
-
-    @message = {
-      response_type: "in_channel",
-      text: @pr.html_url,
-      attachments: [
-        {
-            fallback: @message,
-            author_name: @pr.user.login,
-            author_link: @pr.user.html_url,
-            author_icon: @pr.user.avatar_url,
-            title: @message,
-            title_link: @pr.html_url,
-            text: "##{@pr.number}: #{@pr.title}",
-            thumb_url: get_image,
-        }
-      ]
-    }
-  end
-
-  def setup_images
-    categories = ['animals', 'architecture', 'nature', 'people', 'tech']
-    @images = categories.collect { |c| "http://placeimg.com/75/75/#{c}.png" }
-  end
-
-  def get_image
-    @images.sample
-  end
-
-  def setup_adlibs
-    @data = {
-      REPO: [*@pr.base.repo.name],
-      ADD: [*@pr.additions],
-      DEL: [*@pr.deletions],
-      USER: [*@pr.user.login],
-      TOTAL: [*(@pr.additions + @pr.deletions)],
-      NET: [*(@pr.additions - @pr.deletions)],
-    }
-
-    # "at"libs... ah ha ha
-    # returns nonexistant keys right back
-    @libs = Hash.new { |h, k| k }
-    @libs.merge!(@data.merge(BASE_ADLIBS.dup))
-  end
-
-  def setup_pool
-    add = @libs[:ADD][0]
-    del = @libs[:DEL][0]
-
-    @pool = MESSAGES[:regular].dup
-
-    if add > del
-      @pool += MESSAGES[:net_gain].dup
-    elsif add < del
-      @pool += MESSAGES[:net_loss].dup
+    def initialize octokit
+      @pr = octokit
+      setup_adlibs
+      setup_pool
+      setup_images
+      create_message
     end
 
-    @pool += MESSAGES[:only_gain].dup if add && del == 0
-    @pool += MESSAGES[:only_loss].dup if add == 0 && del
+    private
+
+    def create_message
+      m = @pool.sample
+
+      @message = m.split.to_a.flatten.inject('') do |acc, w|
+        acc + ' ' + w.split(/(\W)/).map { |wpart| [*@libs[wpart.to_sym]].sample.to_s.split.map { |x| x.length == 1 ? x : x.capitalize }.join(' ') }.join
+      end.strip
+
+      @message = {
+        response_type: "in_channel",
+        text: @pr.html_url,
+        attachments: [
+          {
+              fallback: @message,
+              author_name: @pr.user.login,
+              author_link: @pr.user.html_url,
+              author_icon: @pr.user.avatar_url,
+              title: @message,
+              title_link: @pr.html_url,
+              text: "##{@pr.number}: #{@pr.title}",
+              thumb_url: get_image,
+          }
+        ]
+      }
+    end
+
+    def setup_images
+      categories = ['animals', 'architecture', 'nature', 'people', 'tech']
+      @images = categories.collect { |c| "http://placeimg.com/75/75/#{c}.png" }
+    end
+
+    def get_image
+      @images.sample
+    end
+
+    def setup_adlibs
+      @data = {
+        REPO: [*@pr.base.repo.name],
+        ADD: [*@pr.additions],
+        DEL: [*@pr.deletions],
+        USER: [*@pr.user.login],
+        TOTAL: [*(@pr.additions + @pr.deletions)],
+        NET: [*(@pr.additions - @pr.deletions)],
+      }
+
+      # "at"libs... ah ha ha
+      # returns nonexistant keys right back
+      @libs = Hash.new { |h, k| k }
+      @libs.merge!(@data.merge(BASE_ADLIBS.dup))
+    end
+
+    def setup_pool
+      add = @libs[:ADD][0]
+      del = @libs[:DEL][0]
+
+      @pool = MESSAGES[:regular].dup
+
+      if add > del
+        @pool += MESSAGES[:net_gain].dup
+      elsif add < del
+        @pool += MESSAGES[:net_loss].dup
+      end
+
+      @pool += MESSAGES[:only_gain].dup if add && del == 0
+      @pool += MESSAGES[:only_loss].dup if add == 0 && del
+    end
   end
 end
 
