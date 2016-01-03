@@ -1,2 +1,5 @@
 #rbenv local
 .ruby-version
+
+#coverage
+/coverage/
