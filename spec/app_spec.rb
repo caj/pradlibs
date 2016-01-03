@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'awesome_print'
 
 module PradLibs
   describe 'Pull Request Annoyance Delivery Libraries' do
