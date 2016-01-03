@@ -1,9 +1,13 @@
 require 'json'
-require 'hashie'
-require 'awesome_print'
+require 'octokit'
+require_relative 'builder'
 
 module PradLibs
   class Client
+    def initialize builder
+      @builder = builder
+    end
+
     def process text
       if prad_valid? text
         message text
@@ -29,7 +33,7 @@ module PradLibs
         o = Octokit::Client.new
       end
 
-      Message.new(o.pull_request repo, num).message
+      @builder.create o.pull_request repo, num
     end
 
     def parse str
