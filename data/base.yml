@@ -1,9 +1,9 @@
-PREFIX:
+prefix:
   - you won't believe this!
-  - staff pick:
+  - 'staff pick:'
   - breaking news!
-  - the votes are in:
-GROUP:
+  - 'the votes are in:'
+group:
   - the city
   - the state
   - our nation
@@ -21,39 +21,19 @@ GROUP:
   - a hitherto unknown sect
   - a clan of ninja warriors
   - a clan of viking berserkers
-BADJ:
-  - painful
-  - horrible
-  - terrible
-  - awful
-  - sad
-  - mortifying
-  - ugly
-GADJ:
-  - great
-  - awesome
-  - fantastic
-  - amazing
-  - cool
-  - sexy
-WANTED:
-  - wanted
-  - needed
-  - desired
-  - sought after
-ADDWORD:
+addword:
   - additions
   - additional lines
   - new lines of code
-ADDWORD2:
+addword2:
   - added
   - contributed
   - typed
   - inserted
-DELWORD:
+delword:
   - deletions
   - fewer lines
-DELWORD2:
+delword2:
   - deleted
   - destroyed
   - removed
@@ -63,7 +43,28 @@ DELWORD2:
   - vanquished
   - nuked
   - rampaged through
-SUFFIX:
+gadj:
+  - stunning
+  - great
+  - awesome
+  - fantastic
+  - amazing
+  - cool
+  - sexy
+badj:
+  - painful
+  - horrible
+  - terrible
+  - awful
+  - sad
+  - mortifying
+  - ugly
+wanted:
+  - wanted
+  - needed
+  - desired
+  - sought after
+suffix:
   - only developers will understand
   - will surprise you
   - managers just can't accept
