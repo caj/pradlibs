@@ -1,10 +1,17 @@
 require 'active_support/core_ext/hash/keys'
+require 'mustache'
 
 module PradLibs
-  class Dictionary
+  class Dictionary < Mustache
     def self.load_file path
       key = File.basename(path, '.yml')
-      Dictionary.new Hash[key, YAML.load_file(path)]
+      case key
+      when 'verb'
+        data = YAML.load_file(path).collect { |v| Verb.new(v) }
+      else
+        data = YAML.load_file(path)
+      end
+      Dictionary.new Hash[key, data]
     end
 
     def self.load_files paths
@@ -23,7 +30,7 @@ module PradLibs
 
     def lookup key
       str = key.to_s
-      maybe_array = str.split('.').inject(@words) do |h, k|
+      maybe_array = str.split('/').inject(@words) do |h, k|
         ks = k.to_sym
         if h.respond_to?(:has_key?) && h.has_key?(ks)
           h[k.to_sym]
@@ -33,14 +40,10 @@ module PradLibs
           h[k.to_sym]
         # pretty up the key if we did not find a value
         else
-          key.to_s.tr '.', ' '
+          key.to_s.tr '/', ' '
         end
       end
       [*maybe_array].sample
-    end
-
-    def prepare keywords
-      Hash[keywords.map {|x| [x.to_sym, lookup(x)]}]
     end
 
     def merge other
@@ -53,6 +56,19 @@ module PradLibs
 
     def to_h
       @words
+    end
+
+    def method_missing(name, *args, &block)
+      if name =~ /\//
+        return lookup(name)
+      end
+      super unless @words.has_key? name
+      return @words[name].sample if @words[name].is_a?(Array)
+      @words[name]
+    end
+
+    def respond_to?(method)
+      true unless method == :to_hash
     end
   end
 end

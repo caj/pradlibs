@@ -2,20 +2,13 @@ require 'active_support/inflector'
 
 module PradLibs
   class Template
-    attr_reader :keywords
-
     def initialize format, dict = Dictionary.new
-      @format = format
-      @dict   = dict
-      @keywords = parameterize
+      @dict = dict
+      @dict.template = format
     end
 
     def to_s
-      (@format % @dict.prepare(keywords)).titleize
-    end
-
-    def parameterize
-      @format.scan(/%\{([^ ]*)\}/).flatten
+      @dict.render.titleize
     end
   end
 end

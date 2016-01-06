@@ -24,6 +24,7 @@ GEM
     minitest (5.8.3)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    mustache (1.0.2)
     octokit (4.2.0)
       sawyer (~> 0.6.0, >= 0.5.3)
     rack (1.6.4)
@@ -61,6 +62,9 @@ GEM
     tilt (2.0.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    verbs (2.1.4)
+      activesupport (>= 2.3.4)
+      i18n
 
 PLATFORMS
   ruby
@@ -71,12 +75,14 @@ DEPENDENCIES
   foreman
   hashie
   httparty
+  mustache
   octokit (~> 4.0)
   rack
   rack-test
   rspec
   simplecov
   sinatra
+  verbs
 
 BUNDLED WITH
    1.11.0
