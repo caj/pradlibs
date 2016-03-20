@@ -3,25 +3,27 @@ require 'mustache'
 
 module PradLibs
   class Dictionary < Mustache
-    def self.load_file path
-      key = File.basename(path, '.yml')
-      case key
-      when 'verb'
-        data = YAML.load_file(path).collect { |v| Verb.new(v) }
-      else
-        data = YAML.load_file(path)
+    class << self
+      def load_file path
+        key = File.basename(path, '.yml')
+        case key
+        when 'verb'
+          data = YAML.load_file(path).collect { |v| Verb.new(v) }
+        else
+          data = YAML.load_file(path)
+        end
+        Dictionary.new Hash[key, data]
       end
-      Dictionary.new Hash[key, data]
-    end
 
-    def self.load_files paths
-      paths.inject Dictionary.new do |dict, f|
-        Dictionary.merge(dict, self.load_file(f))
+      def load_files paths
+        paths.inject Dictionary.new do |dict, f|
+          Dictionary.merge(dict, self.load_file(f))
+        end
       end
-    end
 
-    def self.merge d1, d2
-      Dictionary.new(d1.to_h).merge d2.to_h
+      def merge d1, d2
+        Dictionary.new(d1.to_h).merge d2.to_h
+      end
     end
 
     def initialize words = {}
@@ -30,7 +32,7 @@ module PradLibs
 
     def lookup key
       str = key.to_s
-      maybe_array = str.split('/').inject(@words) do |h, k|
+      maybe_array = str.split('.').inject(@words) do |h, k|
         ks = k.to_sym
         if h.respond_to?(:has_key?) && h.has_key?(ks)
           h[k.to_sym]
@@ -40,7 +42,7 @@ module PradLibs
           h[k.to_sym]
         # pretty up the key if we did not find a value
         else
-          key.to_s.tr '/', ' '
+          str.tr '.', ' '
         end
       end
       [*maybe_array].sample
@@ -59,12 +61,17 @@ module PradLibs
     end
 
     def method_missing(name, *args, &block)
-      if name =~ /\//
-        return lookup(name)
+      if name =~ /\./
+        lookup(name)
+      elsif @words.has_key? name
+        if @words[name].is_a?(Array)
+          @words[name].sample
+        else
+          @words[name]
+        end
+      else
+        "!! LOOKUP FAILURE !! Key: #{name} (this may be truncated)."
       end
-      super unless @words.has_key? name
-      return @words[name].sample if @words[name].is_a?(Array)
-      @words[name]
     end
 
     def respond_to?(method)
