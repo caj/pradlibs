@@ -70,7 +70,7 @@ module PradLibs
           @words[name]
         end
       else
-        "!! LOOKUP FAILURE !! Key: #{name} (this may be truncated)."
+        ''
       end
     end
 

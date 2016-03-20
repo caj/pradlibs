@@ -37,12 +37,9 @@ module PradLibs
         end
 
         context 'when a placeholder is missing' do
-          it 'returns error text containing "!! Lookup Failure !!"' do
-            expect(Template.new('Hello {{greeting}}', dict).to_s).to include "!! Lookup Failure !!"
-          end
-
-          it 'returns the placeholder for missing nested values' do
-            expect(Template.new('Hello {{some.nested.thing}}', dict).to_s).to include "!! Lookup Failure !!"
+          it 'quietly does nothing with it' do
+            expect(Template.new('Hello {{greeting}}', dict).to_s).to eq 'Hello '
+            expect(Template.new('Hello {{some.nested.thing}}', dict).to_s).to eq 'Hello '
           end
         end
       end
