@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module PradLibs
-  describe Message do
+  xdescribe Message do
     let!(:pr) { Octokit.pull_request 'caj/pradlibs', 2 }
 
     it 'is initializable' do

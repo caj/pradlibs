@@ -45,7 +45,7 @@ module PradLibs
 
     describe 'integration test' do
       let(:dict) { Dictionary.new({ adjective: ['smelly'] }) }
-      let(:pool) { TemplatePool.new ['check out these %{pr.commits} %{adjective} commits'] }
+      let(:pool) { TemplatePool.new ['check out these {{pr.commits}} {{adjective}} commits'] }
       let(:builder) { Builder.new pool, dict }
       let(:client) { Client.new builder }
 

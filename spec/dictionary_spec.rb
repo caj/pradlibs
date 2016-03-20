@@ -71,14 +71,6 @@ module PradLibs
       end
     end
 
-    describe '#prepare' do
-      it 'maps the supplied keywords to individual values from the dictionary' do
-        expect(dict.prepare(['foo'])).to eq({ foo: 'bar!' })
-        expect(%w(Gandalf Dumbledore Merlin)).to include dict.prepare(['wizard'])[:wizard]
-        expect(dict.prepare(['pr.commits'])).to eq({ 'pr.commits': 5})
-      end
-    end
-
     describe '#merge' do
       let(:adverbs) { ['quietly', 'quickly', 'quizzically'] }
       let(:more_words) { { adverb: adverbs } }
@@ -152,7 +144,15 @@ module PradLibs
       end
 
       it 'contains data from all loaded files' do
-        expect(Dictionary.load_files(paths).to_h).to eq fixture
+        actual = Dictionary.load_files(paths).to_h
+        adjusted = actual.inject({}) do |acc, (k, v)|
+          if v.all? { |x| x.is_a? Verb }
+            acc.merge k => v.map { |x| x.instance_variable_get :@root }
+          else
+            acc.merge  k => v
+          end
+        end
+        expect(adjusted).to eq fixture
       end
     end
 
