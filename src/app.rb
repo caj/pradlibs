@@ -7,10 +7,16 @@ PRADLIBS_TPLS = File.join PRADLIBS_BASE, 'templates'
 
 module PradLibs
   class App < Sinatra::Base
-    configure do
-      tpls = PradLibs.load_template_file File.join(PRADLIBS_TPLS, 'silly.yml')
-      dict = Dictionary.load_files Dir[File.join PRADLIBS_DATA, '*.yml']
-      set :pl, Client.new(Builder.new(tpls, dict))
+    def templates
+      @templates ||= PradLibs.load_template_file File.join(PRADLIBS_TPLS, 'silly.yml')
+    end
+
+    def dictionary
+      @dictionary ||= Dictionary.load_files Dir[File.join PRADLIBS_DATA, '*.yml']
+    end
+
+    def pradlibs
+      @pradlibs ||= Client.new(Builder.new(templates, dictionary))
     end
 
     post '/command' do
@@ -19,7 +25,7 @@ module PradLibs
       status 200
 
       text = params[:text]
-      settings.pl.process(text).to_json
+      pradlibs.process(text).to_json
     end
   end
 end

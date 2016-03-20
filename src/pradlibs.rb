@@ -1,4 +1,8 @@
-Dir[File.join(__dir__, '**', '*.rb')].each { |f| require f }
+Dir[File.join(__dir__, '**', '*.rb')].each { |f| require f unless f == __FILE__ }
+require 'bundler'
+Bundler.setup
+Bundler.require
+require 'yaml'
 
 module PradLibs
   def PradLibs.load_template_file(path)
