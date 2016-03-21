@@ -4,6 +4,12 @@ module PradLibs
   describe Client do
     let(:good_url) { "https://github.com/caj/pradlibs/pull/2" }
     let(:bad_url) { "i have no idea what im doing" }
+    let(:good_additional_arg) { "this is an extra arg" }
+    let(:good_additional_hash_arg) { '{ "this": "is also acceptable" }' }
+
+    let(:good_args_with_string) { "#{good_url} #{good_additional_arg}" }
+    let(:good_args_with_hash)   { "#{good_url} #{good_additional_hash_arg}" }
+
 
     before { @builder = double() }
 
@@ -15,7 +21,9 @@ module PradLibs
       let(:client) { Client.new(@builder) }
       context 'good args' do
         it 'returns true' do
-          expect(client.prad_valid? good_url).to be true
+          expect(client.prad_valid? good_url                ).to be true
+          expect(client.prad_valid? good_args_with_string   ).to be true
+          expect(client.prad_valid? good_args_with_hash     ).to be true
         end
       end
 
