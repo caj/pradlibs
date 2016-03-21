@@ -25,7 +25,7 @@ module PradLibs
     private
 
     def message text
-      repo, num = parse text
+      repo, num, args = parse text
 
       if ENV['PRADLIBS_ACCESS_TOKEN']
         o = Octokit::Client.new access_token: ENV['PRADLIBS_ACCESS_TOKEN']
@@ -33,12 +33,20 @@ module PradLibs
         o = Octokit::Client.new
       end
 
-      @builder.create o.pull_request repo, num
+      @builder.create o.pull_request(repo, num), args
     end
 
     def parse str
-      str.match /https:\/\/github.com\/(.*\/.*)\/pull\/(\d*)/
-      [$~[1], $~[2].to_i] if $~
+      str.match /https:\/\/github.com\/(.*\/.*)\/pull\/(\d+) ?(.*)?/
+      additional_args = begin
+                          JSON.parse($~[3])
+                        rescue JSON::ParserError  # oops it wasn't a hash
+                          $~[3]
+                        rescue NoMethodError # oops it wasn't even present
+                          nil
+                        end
+
+      [$~[1], $~[2].to_i, additional_args] if $~
     end
 
     def usage

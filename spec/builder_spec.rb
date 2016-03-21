@@ -57,6 +57,12 @@ module PradLibs
         expect(@mb.create(@pr)[:text]).to eq @pr.html_url
       end
 
+      context 'with optional arguments' do
+        xit 'placeholder for when args are added' do
+          expect(true).to be false
+        end
+      end
+
       describe "[:attachments][0]" do
         before do
           @attachments = @mb.create(@pr)[:attachments][0]

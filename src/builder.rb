@@ -8,7 +8,7 @@ module PradLibs
       setup_images
     end
 
-    def create pr
+    def create pr, args = {}
       message = create_title pr
       {
         response_type: :in_channel,
