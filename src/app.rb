@@ -16,7 +16,7 @@ module PradLibs
     end
 
     def pradlibs
-      @pradlibs ||= Client.new(Builder.new(templates, dictionary))
+      @pradlibs ||= Client.new(MadlibsBuilder.new(templates, dictionary))
     end
 
     post '/command' do

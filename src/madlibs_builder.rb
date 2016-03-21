@@ -1,7 +1,7 @@
 require_relative 'dictionary'
 
 module PradLibs
-  class Builder
+  class MadlibsBuilder
     def initialize pool, dict = Dictionary.new
       @pool = pool
       @dict = dict

@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'octokit'
 
 module PradLibs
-  describe Builder do
+  describe MadlibsBuilder do
 
     before(:all) do
       if ENV['PRADLIBS_ACCESS_TOKEN']
@@ -23,7 +23,7 @@ module PradLibs
       @word_bank = double() # dict with pr included
 
       @pool = double() # The template choices
-      @mb = Builder.new(@pool, @dict) # SUS
+      @mb = MadlibsBuilder.new(@pool, @dict) # SUS
     end
 
     describe '#create' do

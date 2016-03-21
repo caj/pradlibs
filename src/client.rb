@@ -1,6 +1,6 @@
 require 'json'
 require 'octokit'
-require_relative 'builder'
+require_relative 'madlibs_builder'
 
 module PradLibs
   class Client
