@@ -30,43 +30,43 @@ module PradLibs
       expect(Dictionary.new).not_to be_nil
     end
 
-    describe '#lookup' do
+    describe '#[]' do
       context 'on a simple key' do
         it 'works with string keys' do
-          expect(dict.lookup 'foo').not_to be_nil
+          expect(dict.[] 'foo').not_to be_nil
         end
 
         it 'works with symbol keys' do
-          expect(dict.lookup :foo).not_to be_nil
+          expect(dict.[] :foo).not_to be_nil
         end
 
         it 'returns the value of a key' do
-          expect(dict.lookup 'foo').to eq 'bar!'
-          expect(dict.lookup 'number').to be 9
+          expect(dict.[] 'foo').to eq 'bar!'
+          expect(dict.[] 'number').to be 9
         end
 
         it 'samples an array value' do
-          expect(%w(Gandalf Dumbledore Merlin)).to include dict.lookup('wizard')
+          expect(%w(Gandalf Dumbledore Merlin)).to include dict.[]('wizard')
         end
       end
 
       context 'on a compound key' do
         it 'correctly returns a value' do
-          expect(dict.lookup(:"nest.thing")).to be 5
-          expect(dict.lookup('nest.another_thing')).to be 10
-          expect(['chair', 'table', 'toaster']).to include dict.lookup('pos.noun')
-          expect(dict.lookup('pr.commits')).to be 5
+          expect(dict.[](:"nest.thing")).to be 5
+          expect(dict.[]('nest.another_thing')).to be 10
+          expect(['chair', 'table', 'toaster']).to include dict.[]('pos.noun')
+          expect(dict.[]('pr.commits')).to be 5
         end
       end
 
       context 'when a value is missing' do
         it 'returns the key as a string' do
-          expect(dict.lookup('nards')).to eq 'nards'
+          expect(dict.[]('nards')).to eq 'nards'
         end
 
         it 'returns the compound key as a string' do
-          expect(dict.lookup('some.thing')).to eq 'some thing'
-          expect(dict.lookup('nest.a_key')).to eq 'nest a_key'
+          expect(dict.[]('some.thing')).to eq 'some thing'
+          expect(dict.[]('nest.a_key')).to eq 'nest a_key'
         end
       end
     end
@@ -76,8 +76,8 @@ module PradLibs
       let(:more_words) { { adverb: adverbs } }
 
       it 'can return a new Dictionary with additional keys' do
-        expect(adverbs).to include dict.merge(more_words).lookup('adverb')
-        expect(dict.lookup('foo')).to eq 'bar!'
+        expect(adverbs).to include dict.merge(more_words)['adverb']
+        expect(dict['foo']).to eq 'bar!'
       end
     end
 

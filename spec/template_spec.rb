@@ -37,9 +37,20 @@ module PradLibs
         end
 
         context 'when a placeholder is missing' do
-          it 'quietly does nothing with it' do
-            expect(Template.new('Hello {{greeting}}', dict).to_s).to eq 'Hello '
-            expect(Template.new('Hello {{some.nested.thing}}', dict).to_s).to eq 'Hello '
+          context 'when the missing value is a single, non-nested key' do
+            it 'returns the key' do
+              expect(Template.new('Hello {{greeting}}', dict).to_s).to eq 'Hello Greeting'
+            end
+          end
+
+          # TODO: Make this behave like the single missing placeholder spec,
+          #   e.g.
+          #        expect(Template.new('Hello {{some.nested.thing}}', dict).to_s).to
+          #                         eq 'Hello Some Nested Thing'
+          context 'when the missing value is a nested key' do
+            it 'quietly does nothing with it' do
+              expect(Template.new('Hello {{some.nested.thing}}', dict).to_s).to eq 'Hello '
+            end
           end
         end
       end

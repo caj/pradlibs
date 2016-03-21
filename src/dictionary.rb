@@ -30,24 +30,6 @@ module PradLibs
       @words = Hash.new.merge(words).deep_symbolize_keys
     end
 
-    def lookup key
-      str = key.to_s
-      maybe_array = str.split('.').inject(@words) do |h, k|
-        ks = k.to_sym
-        if h.respond_to?(:has_key?) && h.has_key?(ks)
-          h[k.to_sym]
-        # Octokit returns a Sawyer Resource, which uses :key?
-        # https://github.com/lostisland/sawyer
-        elsif h.respond_to?(:key?) && h.key?(ks)
-          h[k.to_sym]
-        # pretty up the key if we did not find a value
-        else
-          str.tr '.', ' '
-        end
-      end
-      [*maybe_array].sample
-    end
-
     def merge other
       Dictionary.new @words.merge other
     end
@@ -60,17 +42,37 @@ module PradLibs
       @words
     end
 
+    def [] key
+      keys = key.to_s.split('.').map(&:to_sym)
+      ret = @words
+      failsafe = ''
+      while keys.any?
+        sub_key = keys.shift
+        failsafe << "#{sub_key} "
+        ret = context.find ret, sub_key
+      end
+      if ret
+        [*ret].sample
+      else
+        failsafe.strip
+      end
+    end
+
     def method_missing(name, *args, &block)
-      if name =~ /\./
-        lookup(name)
-      elsif @words.has_key? name
+      if @words.has_key? name
         if @words[name].is_a?(Array)
           @words[name].sample
         else
           @words[name]
         end
       else
-        ''
+        # TODO figure out wtf is going on up in here
+        # When the Mustache Template (NOT the local template.rb) renders,
+        # it handles everything fine except missing keys.
+        #
+        # This was put in place along with the [] method to handle
+        # that problem, but it still doesn't work for _nested_, missing keys.
+        self[name]
       end
     end
 
