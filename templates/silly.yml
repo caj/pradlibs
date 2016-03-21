@@ -1,0 +1,2 @@
+- "{{group}} and {{group}} want {{#verb.second.imperative.subject}} {{pl.user}} to{{/verb.second.imperative.subject}} these {{pl.total}} commits"
+- "{{#verb.past.perfective.subject}}{{pl.user}} nearly{{/verb.past.perfective.subject}} one {{color}} {{mode_of_transportation}} to bring you these {{pl.total}} commits"
