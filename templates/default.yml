@@ -4,9 +4,9 @@
 
    *Implementation*
    {{prt.implementation}}
-   {{#prt.has_trello_card}}
+   {{#prt.has_trello_card?}}
 
    *Trello Card:*
    {{prt.trello_card_url}}
-   {{/prt.has_trello_card}}
+   {{/prt.has_trello_card?}}
 "
