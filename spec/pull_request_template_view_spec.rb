@@ -1,4 +1,5 @@
 require 'spec_helper'
+
 module PradLibs
   describe PullRequestTemplateView do
     let (:pull_request_data) { "foo" }
