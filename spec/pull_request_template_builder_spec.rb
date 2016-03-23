@@ -1,6 +1,6 @@
 require 'spec_helper'
 module PradLibs
-  describe PullRequestTemplateBuilder do
+  xdescribe PullRequestTemplateBuilder do
 
     before(:all) do
       if ENV['PRADLIBS_ACCESS_TOKEN']
