@@ -58,7 +58,7 @@ module PradLibs
     end
 
     def unexpected_messages
-      failwords.map { |fw| fw + usage }
+      @unexpected_messages ||= failwords.map { |fw| fw + usage }
     end
 
     def failwords
