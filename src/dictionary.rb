@@ -42,6 +42,11 @@ module PradLibs
       @words
     end
 
+    def == o
+      o.class == self.class &&
+        o.words == self.words
+    end
+
     def [] key
       keys = key.to_s.split('.').map(&:to_sym)
       ret = @words
