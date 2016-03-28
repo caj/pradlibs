@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'octokit'
 
 module PradLibs
-  describe MadlibsBuilder do
+  describe Builder do
     good_url = "https://github.com/caj/pradlibs/pull/2"
 
     test_dict = Dictionary.new({ testing: "success!" })
@@ -16,7 +16,7 @@ module PradLibs
     end
 
     before do
-      @mb = MadlibsBuilder.new(test_dict, test_pool, @pr)
+      @mb = Builder.new(test_dict, test_pool, @pr)
     end
 
     describe '#create' do
