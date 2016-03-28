@@ -22,7 +22,7 @@ module PradLibs
     end
 
     def method_missing(name, *args, &block)
-      with_props({"#{find_option(name)}": name})
+      with_props({"#{find_option(name)}" => name})
     end
 
     def respond_to? method
