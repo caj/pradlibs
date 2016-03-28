@@ -54,7 +54,8 @@ module PradLibs
     describe 'integration test' do
       let(:dict) { Dictionary.new({ adjective: ['smelly'] }) }
       let(:pool) { TemplatePool.new ['check out these {{pr.commits}} {{adjective}} commits'] }
-      let(:builder) { MadlibsBuilder.new pool, dict }
+      let(:pr)   { PullRequest.for 'caj/pradlibs', 2 }
+      let(:builder) { MadlibsBuilder.new dict, pool, pr }
       let(:client) { Client.new builder }
 
       it 'generates a title with pr data' do
