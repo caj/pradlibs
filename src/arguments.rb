@@ -37,6 +37,8 @@ module PradLibs
       "usage: <link to PR> [string options | JSON options]"
     end
 
+    private
+
     def make_dictionary
       begin
         if @options[:dictionary]
@@ -61,8 +63,6 @@ module PradLibs
       end
       templates || default_templates
     end
-
-    private
 
     def opts_from_string str
       # implement when there's a need for short args
