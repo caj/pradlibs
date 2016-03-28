@@ -27,7 +27,11 @@ module PradLibs
       context "good args" do
         it "spits out a buzzfeedish title vaguely related to the PR" do
           post '/command', text: good_url
-          ap JSON.parse(last_response.body)
+          ap begin
+               JSON.parse(last_response.body)
+             rescue
+               { ERROR: "FAILED JSON PARSE" }
+             end
           expect(last_response.body).to include "in_channel"
         end
       end
