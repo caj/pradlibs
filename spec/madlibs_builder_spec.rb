@@ -3,58 +3,33 @@ require 'octokit'
 
 module PradLibs
   describe MadlibsBuilder do
+    good_url = "https://github.com/caj/pradlibs/pull/2"
+
+    test_dict = Dictionary.new({ testing: "success!" })
+    test_pool = TemplatePool.new ["Testing status: {{testing}}"]
 
     before(:all) do
-      if ENV['PRADLIBS_ACCESS_TOKEN']
-        o = Octokit::Client.new access_token: ENV['PRADLIBS_ACCESS_TOKEN']
-      else
-        o = Octokit::Client.new
-      end
-
-      @pr = o.pull_request 'caj/pradlibs', 2
+      # TODO save an Arguments obj's state and use that instead of making a request
+      @args = Arguments.new(good_url)
+      @args.parse!
+      @pr = @args.pr
     end
 
     before do
-      @template = double() # The object containing the title
-      allow(@template).to receive(:to_s).and_return 'Generated Message Title'
-      allow(@template).to receive(:base)
-
-      @dict = double() # initial dictionary
-      @word_bank = double() # dict with pr included
-
-      @pool = double() # The template choices
-      @mb = MadlibsBuilder.new(@pool, @dict) # SUS
+      @mb = MadlibsBuilder.new(test_dict, test_pool, @pr)
     end
 
     describe '#create' do
-      before do
-
-        expect(@pool).to receive(:accepts).with(@word_bank).and_return true
-        expect(@pool).to receive(:generate).with(@word_bank).and_return @template
-
-       # @user = double()
-       # allow(@user).to receive(:login).and_return 'Bob'
-       # allow(@user).to receive(:html_url).and_return 'http://bob.net'
-       # allow(@user).to receive(:avatar_url).and_return 'http://fakeimage.url'
-       # @pr = double()
-       # allow(@pr).to receive(:user).and_return @user
-       # allow(@pr).to receive(:title).and_return 'Fancy PR Title'
-       # allow(@pr).to receive(:number).and_return 42
-       # allow(@pr).to receive(:html_url).and_return 'http://www.example.com'
-
-        expect(@dict).to receive(:merge).and_return(@word_bank)
-      end
-
       it 'creates a message hash from a PR' do
-        expect(@mb.create(@pr)).to be_a Hash
+        expect(@mb.create).to be_a Hash
       end
 
       it 'returns a hash with [:response_type] = :in_channel' do
-        expect(@mb.create(@pr)[:response_type]).to eq :in_channel
+        expect(@mb.create[:response_type]).to eq :in_channel
       end
 
       it 'returns the PR link as the message text' do
-        expect(@mb.create(@pr)[:text]).to eq @pr.html_url
+        expect(@mb.create[:text]).to eq @pr.html_url
       end
 
       context 'with optional arguments' do
@@ -65,7 +40,7 @@ module PradLibs
 
       describe "[:attachments][0]" do
         before do
-          @attachments = @mb.create(@pr)[:attachments][0]
+          @attachments = @mb.create[:attachments][0]
         end
 
         it 'has a fallback field' do
@@ -85,7 +60,7 @@ module PradLibs
         end
 
         it 'has a title field' do
-          expect(@attachments[:title]).to eq 'Generated Message Title'
+          expect(@attachments[:title]).to eq 'Testing Status: Success!'
         end
 
         it 'has a title_link field' do
@@ -107,33 +82,26 @@ module PradLibs
     end
 
     describe '#create_title' do
-      before do
-        allow(@pool).to receive(:generate).with(@word_bank).and_return @template
-        allow(@dict).to receive(:merge).and_return(@word_bank)
-      end
-
       context 'when the pool accepts' do
         it 'gets a title from the pool' do
-          expect(@pool).to receive(:accepts).with(@word_bank).and_return true
-          expect(@mb.create_title(@pr)).to match /generated message title/i
+          expect(@mb.create_title @pr).to match /success!/i
         end
       end
 
       context 'when the pool rejects' do
         before do
-          expect(@dict).not_to receive(:prepare)
-          expect(@pool).not_to receive(:generate)
+          expect(test_pool).not_to receive(:generate)
         end
 
         it 'uses the pr title' do
-          expect(@pool).to receive(:accepts).with(@word_bank).and_return false
-          expect(@mb.create_title(@pr)).to eq "DON'T MERGE ME"
+          expect(test_pool).to receive(:accepts).with(test_dict).and_return false
+          expect(@mb.create_title @pr).to eq "DON'T MERGE ME"
         end
       end
     end
 
     describe '#get_pradlibs' do
-      let(:pl) { @mb.get_pradlibs(@pr) }
+      let(:pl) { @mb.get_pradlibs @pr }
       it 'returns a hash with some meta parameters' do
         expect(pl[:user]).to be @pr.user.login
         expect(pl[:repo]).to be @pr.base.repo.name

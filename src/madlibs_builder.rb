@@ -2,26 +2,27 @@ require_relative 'dictionary'
 
 module PradLibs
   class MadlibsBuilder
-    def initialize pool, dict = Dictionary.new
-      @pool = pool
-      @dict = dict
+    def initialize dictionary, template_pool, pull_request
+      @dict = dictionary
+      @pool = template_pool
+      @pr = pull_request
       setup_images
     end
 
-    def create pr, args = {}
-      message = create_title pr
+    def create
+      message = create_title @pr
       {
         response_type: :in_channel,
-        text: pr.html_url,
+        text: @pr.html_url,
         attachments: [
           {
             fallback: message,
-            author_name: pr.user.login,
-            author_link: pr.user.html_url,
-            author_icon: pr.user.avatar_url,
+            author_name: @pr.user.login,
+            author_link: @pr.user.html_url,
+            author_icon: @pr.user.avatar_url,
             title: message,
-            title_link: pr.html_url,
-            text: "##{pr.number}: #{pr.title}",
+            title_link: @pr.html_url,
+            text: "##{@pr.number}: #{@pr.title}",
             thumb_url: get_image,
           }
         ]
