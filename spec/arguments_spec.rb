@@ -4,7 +4,7 @@ module PradLibs
   describe Arguments do
     good_url = "https://github.com/caj/pradlibs/pull/2"
     good_hash_opts = '{ "dictionary": "color",' \
-                       '"templates":  "default",' \
+                       '"templates":  "pr_template/pr_template"' \
                        '}'
 
     it 'is initializable' do
@@ -49,14 +49,6 @@ module PradLibs
         end
       end
 
-      shared_examples_for "a default-setter of" do |ivar_str|
-        it "#{ivar_str}" do
-          default_method_name = "default_#{ivar_str}"
-          defaults = subject.send default_method_name
-          expect { subject.parse! }.to change { subject.send ivar_str }.to eq(defaults)
-        end
-      end
-
       context "when initialized with" do
         context "a good url," do
           subject { Arguments.new good_url }
@@ -66,35 +58,19 @@ module PradLibs
 
           context "and only that," do
             it_behaves_like "a non-setter of", "options"
-            it_behaves_like "a default-setter of", "dictionary"
-            it_behaves_like "a default-setter of", "templates"
+            it_behaves_like "a non-setter of", "dictionary"
+            it_behaves_like "a non-setter of", "templates"
           end
 
           context "and a hash with" do
             subject { Arguments.new "#{good_url} #{good_hash_opts}" }
 
             context "a 'dictionary' key" do
-              context "which matches a file name or pattern in the '/data' dir" do
-                it_behaves_like "a setter of", "dictionary"
-              end
-
-              context "which DOES NOT match a file name or pattern in the '/data' dir" do
-                subject { Arguments.new "#{good_url} { \"dictionary\": \"abcdefg\" }" }
-
-                it_behaves_like "a default-setter of", "dictionary"
-              end
+              it_behaves_like "a setter of", "options"
             end
 
             context "a 'templates' key" do
-              context "which matches a file name in the '/data' dir" do
-                it_behaves_like "a setter of", "templates"
-              end
-
-              context "which DOES NOT match a file name in the '/data' dir" do
-                subject { Arguments.new "#{good_url} { \"templates\": \"abcdefg\" }" }
-
-                it_behaves_like "a default-setter of", "templates"
-              end
+              it_behaves_like "a setter of", "options"
             end
           end
         end
@@ -107,6 +83,46 @@ module PradLibs
           it_behaves_like "a non-setter of", "options"
           it_behaves_like "a non-setter of", "dictionary"
           it_behaves_like "a non-setter of", "templates"
+        end
+      end
+    end
+
+    describe '#templates' do
+      context 'when a templates key with a valid filename is present in @options' do
+        subject { Arguments.new "#{good_url} #{good_hash_opts}" }
+        it 'loads the referenced templates' do
+          reference = PradLibs.load_template_file File.join(PRADLIBS_TPLS, 'pr_template/pr_template.yml')
+          subject.parse!
+          expect(subject.templates).to eq reference
+        end
+      end
+
+      context 'when a templates key with a valid filename is MISSING in @options' do
+        subject { Arguments.new "#{good_url} { \"templates\": \"abcdefg\" }" }
+        it 'loads a default templates' do
+          reference = subject.send "default_templates"
+          subject.parse!
+          expect(subject.templates).to eq reference
+        end
+      end
+    end
+
+    describe '#dictionary' do
+      context 'when a dictionary key with a valid filename is present in @options' do
+        subject { Arguments.new "#{good_url} #{good_hash_opts}" }
+        it 'loads the referenced dictionary' do
+          reference = Dictionary.load_file File.join(PRADLIBS_DATA, 'color.yml')
+          subject.parse!
+          expect(subject.dictionary).to eq reference
+        end
+      end
+
+      context 'when a dictionary key with a valid filename is MISSING in @options' do
+        subject { Arguments.new "#{good_url} { \"dictionary\": \"abcdefg\" }" }
+        it 'loads a default dictionary' do
+          reference = subject.send "default_dictionary"
+          subject.parse!
+          expect(subject.dictionary).to eq reference
         end
       end
     end

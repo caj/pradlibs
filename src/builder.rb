@@ -6,11 +6,11 @@ module PradLibs
       @dict = dictionary
       @pool = template_pool
       @pr = pull_request
-      setup_images
     end
 
     def create
       message = create_title @pr
+      setup_images
       {
         response_type: :in_channel,
         text: @pr.html_url,
