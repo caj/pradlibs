@@ -34,6 +34,16 @@ module PradLibs
              end
           expect(last_response.body).to include "in_channel"
         end
+
+        it "has an alternate endpoint" do
+          post '/command/pr-only', text: good_url
+          ap begin
+               JSON.parse(last_response.body)
+             rescue
+               { ERROR: "FAILED JSON PARSE" }
+             end
+          expect(last_response.body).to include "in_channel"
+        end
       end
     end
   end

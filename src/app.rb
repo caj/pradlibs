@@ -7,6 +7,7 @@ PRADLIBS_TPLS = File.join PRADLIBS_BASE, 'templates'
 
 module PradLibs
   class App < Sinatra::Base
+    # curl -H "Content-Type: application/json" -X POST "http://localhost:5000/command" -d "/buzz https://github.com/usertesting/orders/pull/4635"
     post /\/command\/?(pr-only)?/ do
       content_type :json
       pr_only = params[:captures] && params[:captures][0]
@@ -16,6 +17,11 @@ module PradLibs
       text = params[:text]
       @args = Arguments.new(text)
       @args.parse!
+
+      # TODO figure out why.
+      binding.pry
+
+      return params.inspect
 
       begin
         @mb = if pr_only
