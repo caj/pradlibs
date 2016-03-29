@@ -80,7 +80,7 @@ module PradLibs
     end
 
     def default_templates
-      PradLibs.load_template_file File.join(PRADLIBS_TPLS, 'silly.yml')
+      PradLibs.load_template_file File.join(PRADLIBS_TPLS, 'madlibs', 'silly.yml')
     end
   end
 end
