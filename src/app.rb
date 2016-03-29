@@ -18,11 +18,6 @@ module PradLibs
       @args = Arguments.new(text)
       @args.parse!
 
-      # TODO figure out why.
-      binding.pry
-
-      return params.inspect
-
       begin
         @mb = if pr_only
                 PullRequestTemplateBuilder.new(@args.pr)
