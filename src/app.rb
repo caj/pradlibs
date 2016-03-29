@@ -7,25 +7,34 @@ PRADLIBS_TPLS = File.join PRADLIBS_BASE, 'templates'
 
 module PradLibs
   class App < Sinatra::Base
-    def templates
-      @templates ||= PradLibs.load_template_file File.join(PRADLIBS_TPLS, 'silly.yml')
-    end
-
-    def dictionary
-      @dictionary ||= Dictionary.load_files Dir[File.join PRADLIBS_DATA, '*.yml']
-    end
-
-    def pradlibs
-      @pradlibs ||= Client.new(MadlibsBuilder.new(templates, dictionary))
-    end
-
-    post '/command' do
+    # curl -H "Content-Type: application/json" -X POST "http://localhost:5000/command" -d "/buzz https://github.com/usertesting/orders/pull/4635"
+    post /\/command\/?(pr-only)?/ do
       content_type :json
+      pr_only = params[:captures] && params[:captures][0]
 
       status 200
 
       text = params[:text]
-      pradlibs.process(text).to_json
+      @args = Arguments.new(text)
+      @args.parse!
+
+      # TODO figure out why.
+      binding.pry
+
+      return params.inspect
+
+      begin
+        @mb = if pr_only
+                PullRequestTemplateBuilder.new(@args.pr)
+              else
+                MadlibsBuilder.new(@args.dictionary, @args.templates, @args.pr)
+              end
+
+        message = @mb.create
+        message.to_json
+      rescue
+        @args.usage
+      end
     end
   end
 end

@@ -1,97 +1,56 @@
 require 'spec_helper'
+
 module PradLibs
   describe PullRequestTemplateBuilder do
+    good_url = "https://github.com/caj/pradlibs/pull/4"
 
-    before(:all) do
-      if ENV['PRADLIBS_ACCESS_TOKEN']
-        o = Octokit::Client.new access_token: ENV['PRADLIBS_ACCESS_TOKEN']
-      else
-        o = Octokit::Client.new
-      end
-
-      @pr = o.pull_request 'caj/pradlibs', 2
+    before :all do
+      @args = Arguments.new good_url
+      @args.parse!
+      @pr = @args.pr
     end
 
-    before do
-      @template = double() # The object containing the title
-      allow(@template).to receive(:to_s).and_return 'Generated Message Title'
-      allow(@template).to receive(:base)
+    before :each do
+      allow(@pr).to receive(:body).and_return(
+        "#{@pr.html_url}
+        *Purpose*
+        here's a purpose, yo
 
-      @dict = double() # initial dictionary
-      @word_bank = double() # dict with pr included
+        *Implementation*
+        we implemented it like this!
 
-      @mb = PullRequestTemplateBuilder.new(@dict)
+        *Trello Card:*
+        and it was related to a link like www.trello.com"
+      )
     end
 
-    describe '#create' do
-      before do
-        expect(@dict).to receive(:merge).and_return(@word_bank)
-      end
+    subject { PullRequestTemplateBuilder.new @pr }
 
-      it 'creates a message hash from a PR' do
-        expect(@mb.create(@pr)).to be_a Hash
-      end
+    it 'is initializable with a pull request object' do
+      expect(subject).to be_a PullRequestTemplateBuilder
+    end
 
-      it 'returns a hash with [:response_type] = :in_channel' do
-        expect(@mb.create(@pr)[:response_type]).to eq :in_channel
-      end
-
-      it 'returns the PR link as the message text' do
-        expect(@mb.create(@pr)[:text]).to eq @pr.html_url
-      end
-
-      context 'with optional arguments' do
-        xit 'placeholder for when args are added' do
-          expect(true).to be false
-        end
-      end
-
-      describe "[:attachments][0]" do
-        before do
-          @attachments = @mb.create(@pr)[:attachments][0]
-        end
-
-        it 'has a fallback field' do
-          expect(@attachments[:fallback]).not_to be_nil
-        end
-
-        it 'has an author_name field' do
-          expect(@attachments[:author_name]).to eq @pr.user.login
-        end
-
-        it 'has an author_link field' do
-          expect(@attachments[:author_link]).to eq @pr.user.html_url
-        end
-
-        it 'has an author_icon field' do
-          expect(@attachments[:author_icon]).to eq @pr.user.avatar_url
-        end
-
-        it 'has a title field' do
-          expect(@attachments[:title]).to eq 'Generated Message Title'
-        end
-
-        it 'has a title_link field' do
-          expect(@attachments[:title_link]).to eq @pr.html_url
-        end
-
-        it 'has the PR number in the text field' do
-          expect(@attachments[:text]).to include @pr.number.to_s
-        end
-
-        it 'has the PR title in the text field' do
-          expect(@attachments[:text]).to include @pr.title
-        end
-
-        it 'has a thumb_url field' do
-          expect(@attachments[:thumb_url]).to match /http:\/\/placeimg.com\/75\/75\/([a-z]+)\.png/
-        end
+    describe '#purpose' do
+      it 'is the part of the PR body between *Purpose* and the next *' do
+        expect(subject.purpose).to match /here's a purpose, yo\s*/
       end
     end
 
-    describe '#create_title' do
-      it "should return the title of the PR" do
-        expect(@mb.create_title).to eq(@pr[:title])
+    describe '#implementation' do
+      it 'is the part of the PR body between *Implementation* and the next *' do
+        expect(subject.implementation).to match /we implemented it/
+      end
+    end
+
+    describe '#trello_card_url' do
+      it 'is the part of the PR body between *Trello Card:* and the next *' do
+        expect(subject.trello_card_url).to match /www\.trello\.com/
+      end
+    end
+
+    describe '#has_trello_card?' do
+      it 'is true if #trello_card_url parsed' do
+        expect(subject.has_trello_card?).to be true
       end
     end
   end

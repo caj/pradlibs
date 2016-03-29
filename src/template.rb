@@ -10,5 +10,10 @@ module PradLibs
     def to_s
       @dict.render.titleize
     end
+
+    def == o
+      o.class == self.class &&
+        o.dict == self.dict
+    end
   end
 end
