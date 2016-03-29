@@ -44,7 +44,7 @@ module PradLibs
 
     def == o
       o.class == self.class &&
-        o.words == self.words
+        o.to_h.keys == self.to_h.keys
     end
 
     def [] key

@@ -3,7 +3,6 @@ require 'json'
 module PradLibs
   class Arguments
     attr_accessor :source, :repo, :repo_name, :pr_number, :options
-    attr_reader :dictionary, :templates, :pr
 
     MATCH_STRING = /https:\/\/github.com\/(.*\/.*)\/pull\/(\d+) ?(.*)?/
 
@@ -28,9 +27,18 @@ module PradLibs
                  end
 
       @options = send "opts_from_#{opt_type}", rawptions
-      @dictionary = make_dictionary
-      @templates = make_templates
-      @pr = PullRequest.for @repo_name, @pr_number
+    end
+
+    def dictionary
+      @dictionary ||= make_dictionary
+    end
+
+    def templates
+      @templates ||= make_templates
+    end
+
+    def pr
+      @pr ||= PullRequest.for @repo_name, @pr_number
     end
 
     def usage

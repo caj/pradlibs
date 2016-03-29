@@ -94,7 +94,7 @@ module PradLibs
         end
 
         it 'uses the pr title' do
-          expect(test_pool).to receive(:accepts).with(test_dict).and_return false
+          expect(test_pool).to receive(:accepts).at_least(:once).and_return false
           expect(@mb.create_title @pr).to eq "DON'T MERGE ME"
         end
       end
