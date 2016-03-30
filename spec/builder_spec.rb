@@ -60,7 +60,7 @@ module PradLibs
         end
 
         it 'has a title field' do
-          expect(@attachments[:title]).to eq 'Testing Status: Success!'
+          expect(@attachments[:title]).to eq 'Testing status: success!'
         end
 
         it 'has a title_link field' do

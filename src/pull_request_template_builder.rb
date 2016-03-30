@@ -18,7 +18,8 @@ module PradLibs
             "title": @pr.title,
             "title_link": @pr.html_url,
             "text": message,
-            "color": "#F35A00"
+            "color": "#F35A00",
+            "mrkdwn_in": [ "text" ]
           }
         ]
       }
