@@ -36,7 +36,7 @@ module PradLibs
         end
 
         it "has an alternate endpoint" do
-          post '/command/pr-only', text: good_url
+          post '/command', text: good_url, command: "/pr"
           ap begin
                JSON.parse(last_response.body)
              rescue
