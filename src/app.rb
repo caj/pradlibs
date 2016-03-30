@@ -17,7 +17,7 @@ module PradLibs
         text = params[:text]
         @args = Arguments.new(text)
         @args.parse!
-      rescue Exception => e
+      rescue
         return "Something strange has happened. #{params.inspect}"
       end
 
