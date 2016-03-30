@@ -1,12 +1,14 @@
-- "{{pr.html_url}}
-   *Purpose*
-   {{prt.purpose}}
+- "
+{{pr.html_url}}\n
+*Purpose*\n
+{{prt.purpose}}\n\n
 
-   *Implementation*
-   {{prt.implementation}}
-   {{#prt.has_trello_card?}}
+*Implementation*\n
+{{prt.implementation}}\n\n
 
-   *Trello Card:*
-   {{prt.trello_card_url}}
-   {{/prt.has_trello_card?}}
+{{#prt.has_trello_card?}}
+*Trello Card:*\n
+{{prt.trello_card_url}}\n\n
+{{/prt.has_trello_card?}}
 "
+
