@@ -10,7 +10,6 @@ module PradLibs
       message = create_title @pr
       {
         "response_type": :in_channel,
-        "text": @pr.html_url,
         "attachments": [
           {
             "pretext": "#{@dict.pl[:user]} requests code review.",
