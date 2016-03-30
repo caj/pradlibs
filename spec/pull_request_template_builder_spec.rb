@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module PradLibs
   describe PullRequestTemplateBuilder do
-    good_url = "https://github.com/caj/pradlibs/pull/4"
+    good_url = "https://github.com/usertesting/orders/pull/4635"
 
     before :all do
       @args = Arguments.new good_url
@@ -13,14 +13,14 @@ module PradLibs
     before :each do
       allow(@pr).to receive(:body).and_return(
         "#{@pr.html_url}
-        *Purpose*
+        # Purpose
         here's a purpose, yo
 
-        *Implementation*
+        # Implementation
         we implemented it like this!
 
-        *Trello Card:*
-        and it was related to a link like www.trello.com"
+        # Trello Card
+        and it was related to a link like https://trello.com/card-blah"
       )
     end
 
@@ -44,7 +44,7 @@ module PradLibs
 
     describe '#trello_card_url' do
       it 'is the part of the PR body between *Trello Card:* and the next *' do
-        expect(subject.trello_card_url).to match /www\.trello\.com/
+        expect(subject.trello_card_url).to match /trello\.com/
       end
     end
 

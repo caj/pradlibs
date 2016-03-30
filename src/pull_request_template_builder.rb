@@ -9,17 +9,16 @@ module PradLibs
     def create
       message = create_title @pr
       {
-        response_type: :in_channel,
-        text: @pr.html_url,
-        attachments: [
+        "response_type": :in_channel,
+        "text": @pr.html_url,
+        "attachments": [
           {
-            fallback: message,
-            author_name: @pr.user.login,
-            author_link: @pr.user.html_url,
-            author_icon: @pr.user.avatar_url,
-            title: message,
-            title_link: @pr.html_url,
-            text: "##{@pr.number}: #{@pr.title}",
+            "pretext": "#{@dict.pl[:user]} requests code review.",
+            "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implementation}",
+            "title": @pr.title,
+            "title_link": @pr.html_url,
+            "text": message,
+            "color": "#F35A00"
           }
         ]
       }
@@ -27,7 +26,9 @@ module PradLibs
 
     def create_title pull_request
       @dict = @dict.merge({
-        prt: prt
+        prt: prt,
+        pl: get_pradlibs(pull_request),
+        pr: @pr
       })
 
       super
@@ -37,6 +38,7 @@ module PradLibs
       {
         purpose: purpose,
         implementation: implementation,
+        trello_card_url: trello_card_url,
         has_trello_card?: has_trello_card?
       }
     end
@@ -46,19 +48,20 @@ module PradLibs
     end
 
     def purpose
-      body.match(/.*\*Purpose\*([^\*]*)/)[1].strip
+      body.match(/#\s+Purpose(.*)#\s+Implementation/m)[1].strip
     rescue
       nil
     end
 
     def implementation
-      body.match(/.*\*Implementation\*([^\*]*)/)[1].strip
+      body.match(/#\s+Implementation(.*)#\s+Trello Card/m)[1].strip
     rescue
       nil
     end
 
     def trello_card_url
-      body.match(/.*\*Trello Card:\*([^\*]*)/)[1].strip
+      url = body.match(/#\s+Trello Card(.*)/m)[1]
+      url.match(/(https:\/\/trello\S+)/)[1].strip
     rescue
       nil
     end
