@@ -7,11 +7,11 @@ PRADLIBS_TPLS = File.join PRADLIBS_BASE, 'templates'
 
 module PradLibs
   class App < Sinatra::Base
-    post /\/command\/?(pr-only)?/ do
+    post "/command" do
       content_type :json
-      pr_only = params[:captures] && params[:captures][0]
-
       status 200
+
+      pr_only = (params[:command] || '').downcase == "/pr"
 
       text = params[:text]
       @args = Arguments.new(text)
@@ -23,7 +23,6 @@ module PradLibs
               else
                 MadlibsBuilder.new(@args.dictionary, @args.templates, @args.pr)
               end
-
         message = @mb.create
         message.to_json
       rescue

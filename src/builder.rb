@@ -35,7 +35,7 @@ module PradLibs
         pl: get_pradlibs(pull_request)
       })
       return pull_request.title unless @pool.accepts word_bank
-      @pool.generate(word_bank).to_s
+      CGI.unescapeHTML(@pool.generate(word_bank).to_s)
     end
 
     def get_image
