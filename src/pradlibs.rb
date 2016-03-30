@@ -1,4 +1,4 @@
-Dir[File.join(__dir__, '**', '*.rb')].each { |f| require f unless f == __FILE__ }
+Dir[File.join(__dir__, '**', '*.rb')].each { |f| require_relative f unless f == __FILE__ }
 require 'bundler'
 Bundler.setup
 Bundler.require
