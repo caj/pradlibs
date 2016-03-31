@@ -1,3 +1,5 @@
+require_relative 'builder'
+
 module PradLibs
   class PullRequestTemplateBuilder < Builder
     def initialize pr

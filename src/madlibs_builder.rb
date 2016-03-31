@@ -1,3 +1,5 @@
+require_relative 'builder'
+
 module PradLibs
   class MadlibsBuilder < Builder
     def create_title pull_request
