@@ -1,3 +1,5 @@
+require_relative 'builder'
+
 module PradLibs
   class PullRequestTemplateBuilder < Builder
     def initialize pr
@@ -10,7 +12,6 @@ module PradLibs
       message = create_title @pr
       {
         "response_type": :in_channel,
-        "text": @pr.html_url,
         "attachments": [
           {
             "pretext": "#{@dict.pl[:user]} requests code review.",
