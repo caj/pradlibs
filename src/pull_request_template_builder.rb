@@ -15,8 +15,8 @@ module PradLibs
         "response_type": :in_channel,
         "attachments": [
           {
-            "pretext": "#{@slack_params[:user_name]} requests code review for a PR in the #{@pl.repo} repository. <!here>",
-            "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implemaentation}",
+            "pretext": "#{@slack_params[:user_name]} requests code review for a PR in the #{@pl[:repo]} repository. <!here>",
+            "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implementation}",
             "title": @pr.title,
             "title_link": @pr.html_url,
             "text": message,
