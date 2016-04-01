@@ -19,7 +19,7 @@ module PradLibs
           {
             "pretext": "#{@slack_params[:user_name]} requests code review for a PR in the #{@pl[:repo]} repository. <!here>",
             "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implementation}",
-            "title": @pr.title,
+            "title": "#{@pr.title} (+#{@pr.additions} / -#{@pr.deletions})",
             "title_link": @pr.html_url,
             "text": message,
             "color": "#F35A00",
