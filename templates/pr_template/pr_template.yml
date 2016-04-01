@@ -1,5 +1,6 @@
 - "
-{{pr.html_url}}\n
+<!channel>
+(+{{pr.additions}} / -{{pr.deletions}})\n
 *Purpose*\n
 {{prt.purpose}}\n\n
 
