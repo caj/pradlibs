@@ -2,11 +2,12 @@ require_relative 'builder'
 
 module PradLibs
   class PullRequestTemplateBuilder < Builder
-    def initialize pr, slack_params
-      @dict = Dictionary.new
+    def initialize pull_request, slack_params
       @pool = PradLibs.load_template_file(File.join(PRADLIBS_TPLS, "pr_template/pr_template.yml"))
-      @pr = pr
+      @pr = pull_request
       @pl = get_pradlibs
+
+      @dict = combine_looker_uppers Dictionary.new
       @slack_params = slack_params.with_indifferent_access
     end
 
@@ -28,14 +29,12 @@ module PradLibs
       }
     end
 
-    def create_title
-      @dict = @dict.merge({
+    def combine_looker_uppers dict
+      dict.merge({
         prt: prt,
         pl: @pl,
         pr: @pr
       })
-
-      super
     end
 
     def prt
