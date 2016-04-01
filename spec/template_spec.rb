@@ -7,10 +7,6 @@ module PradLibs
     end
 
     describe '#to_s' do
-      it 'is the titleized version of the given string' do
-        expect(Template.new('hear ye hear ye').to_s).to eq 'Hear Ye Hear Ye'
-      end
-
       context 'when dictionary values have been provided' do
         let(:format) { 'These {{pr.commits}} {{adjective}} commits will make your day' }
         let(:dict) do
@@ -30,16 +26,16 @@ module PradLibs
 
         it 'interpolates the string value' do
           expect([
-            'These 5 Squeaky Commits Will Make Your Day',
-            'These 5 Shaky Commits Will Make Your Day',
-            'These 5 Spotted Commits Will Make Your Day',
+            'These 5 squeaky commits will make your day',
+            'These 5 shaky commits will make your day',
+            'These 5 spotted commits will make your day',
           ]).to include Template.new(format, dict).to_s
         end
 
         context 'when a placeholder is missing' do
           context 'when the missing value is a single, non-nested key' do
             it 'returns the key' do
-              expect(Template.new('Hello {{greeting}}', dict).to_s).to eq 'Hello Greeting'
+              expect(Template.new('Hello {{greeting}}', dict).to_s).to eq 'Hello greeting'
             end
           end
 

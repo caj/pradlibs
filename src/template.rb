@@ -8,7 +8,7 @@ module PradLibs
     end
 
     def to_s
-      @dict.render.titleize
+      @dict.render
     end
 
     def == o

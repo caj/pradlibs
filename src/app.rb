@@ -11,11 +11,15 @@ module PradLibs
       content_type :json
       status 200
 
-      pr_only = (params[:command] || '').downcase == "/pr"
+      begin
+        pr_only = (params[:command] || '').downcase == "/pr"
 
-      text = params[:text]
-      @args = Arguments.new(text)
-      @args.parse!
+        text = params[:text]
+        @args = Arguments.new(text)
+        @args.parse!
+      rescue
+        return "Something strange has happened. #{params.inspect}"
+      end
 
       begin
         @mb = if pr_only

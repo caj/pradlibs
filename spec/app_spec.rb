@@ -11,6 +11,7 @@ module PradLibs
 
     describe "#post" do
       let(:good_url) { "https://github.com/caj/pradlibs/pull/2" }
+      let(:good_prt_url) { "https://github.com/usertesting/orders/pull/4635" }
 
       it "can recieve a POST request" do
         post '/command'
@@ -36,7 +37,7 @@ module PradLibs
         end
 
         it "has an alternate endpoint" do
-          post '/command', text: good_url, command: "/pr"
+          post '/command', text: good_prt_url, command: "/pr"
           ap begin
                JSON.parse(last_response.body)
              rescue
