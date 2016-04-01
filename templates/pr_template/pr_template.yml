@@ -1,5 +1,4 @@
 - "
-<!channel>
 (+{{pr.additions}} / -{{pr.deletions}})\n
 *Purpose*\n
 {{prt.purpose}}\n\n
@@ -10,6 +9,7 @@
 {{#prt.has_trello_card?}}
 *Trello Card:*\n
 {{prt.trello_card_url}}\n\n
-{{/prt.has_trello_card?}}
+{{/prt.has_trello_card?}}\n
+<!here>
 "
 
