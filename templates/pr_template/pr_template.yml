@@ -10,6 +10,5 @@
 *Trello Card:*\n
 {{prt.trello_card_url}}\n\n
 {{/prt.has_trello_card?}}\n
-<!here>
 "
 
