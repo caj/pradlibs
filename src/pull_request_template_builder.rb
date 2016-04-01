@@ -6,16 +6,17 @@ module PradLibs
       @dict = Dictionary.new
       @pool = PradLibs.load_template_file(File.join(PRADLIBS_TPLS, "pr_template/pr_template.yml"))
       @pr = pr
+      @pl = get_pradlibs
       @slack_params = slack_params.with_indifferent_access
     end
 
     def create
-      message = create_title @pr
+      message = create_title
       {
         "response_type": :in_channel,
         "attachments": [
           {
-            "pretext": "#{@slack_params[:user_name]} requests code review for a PR in the #{get_pradlibs[:repo]} repository. <!here>",
+            "pretext": "#{@slack_params[:user_name]} requests code review for a PR in the #{@pl[:repo]} repository. <!here>",
             "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implementation}",
             "title": @pr.title,
             "title_link": @pr.html_url,
@@ -27,10 +28,10 @@ module PradLibs
       }
     end
 
-    def create_title pull_request
+    def create_title
       @dict = @dict.merge({
         prt: prt,
-        pl: get_pradlibs(pull_request),
+        pl: @pl,
         pr: @pr
       })
 
