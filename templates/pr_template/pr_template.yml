@@ -1,14 +1,13 @@
 - "
-(+{{pr.additions}} / -{{pr.deletions}})\n
 *Purpose*\n
-{{prt.purpose}}\n\n
+{{prt.purpose}}\n
 
 *Implementation*\n
-{{prt.implementation}}\n\n
+{{prt.implementation}}\n
 
 {{#prt.has_trello_card?}}
 *Trello Card:*\n
-{{prt.trello_card_url}}\n\n
+{{prt.trello_card_url}}\n
 {{/prt.has_trello_card?}}\n
 "
 
