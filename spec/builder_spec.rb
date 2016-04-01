@@ -4,6 +4,19 @@ require 'octokit'
 module PradLibs
   describe Builder do
     good_url = "https://github.com/caj/pradlibs/pull/2"
+    params =
+      {
+        token:       "example token",
+        team_id:     "T0000",
+        team_domain: "example domain",
+        channel_id:   "C0000000000",
+        channel_name: "code_review",
+        user_id:      "U0000000000",
+        user_name:    "User",
+        command:      "/buzz",
+        text:         good_url,
+        response_url: "www.example.com"
+      }
 
     test_dict = Dictionary.new({ testing: "success!" })
     test_pool = TemplatePool.new ["Testing status: {{testing}}"]
@@ -16,7 +29,7 @@ module PradLibs
     end
 
     before do
-      @mb = Builder.new(test_dict, test_pool, @pr)
+      @mb = Builder.new(test_dict, test_pool, @pr, params)
     end
 
     describe '#create' do

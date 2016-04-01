@@ -2,10 +2,11 @@ require_relative 'builder'
 
 module PradLibs
   class PullRequestTemplateBuilder < Builder
-    def initialize pr
+    def initialize pr, slack_params
       @dict = Dictionary.new
       @pool = PradLibs.load_template_file(File.join(PRADLIBS_TPLS, "pr_template/pr_template.yml"))
       @pr = pr
+      @slack_params = slack_params.with_indifferent_access
     end
 
     def create
@@ -14,7 +15,7 @@ module PradLibs
         "response_type": :in_channel,
         "attachments": [
           {
-            "pretext": "#{@dict.pl[:user]} requests code review.",
+            "pretext": "#{@slack_params[:user_name]} requests code review.",
             "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implementation}",
             "title": @pr.title,
             "title_link": @pr.html_url,

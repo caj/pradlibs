@@ -2,10 +2,11 @@ require_relative 'dictionary'
 
 module PradLibs
   class Builder
-    def initialize dictionary, template_pool, pull_request
+    def initialize dictionary, template_pool, pull_request, slack_params
       @dict = dictionary
       @pool = template_pool
       @pr = pull_request
+      @slack_params = slack_params.with_indifferent_access
     end
 
     def create
