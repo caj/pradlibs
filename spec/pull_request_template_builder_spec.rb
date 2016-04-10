@@ -3,6 +3,19 @@ require 'spec_helper'
 module PradLibs
   describe PullRequestTemplateBuilder do
     good_url = "https://github.com/usertesting/orders/pull/4635"
+    params =
+      {
+        token:       "example token",
+        team_id:     "T0000",
+        team_domain: "example domain",
+        channel_id:   "C0000000000",
+        channel_name: "code_review",
+        user_id:      "U0000000000",
+        user_name:    "User",
+        command:      "/pr",
+        text:         good_url,
+        response_url: "www.example.com"
+      }
 
     before :all do
       @args = Arguments.new good_url
@@ -24,7 +37,7 @@ module PradLibs
       )
     end
 
-    subject { PullRequestTemplateBuilder.new @pr }
+    subject { PullRequestTemplateBuilder.new @pr, params }
 
     it 'is initializable with a pull request object' do
       expect(subject).to be_a PullRequestTemplateBuilder

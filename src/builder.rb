@@ -2,14 +2,17 @@ require_relative 'dictionary'
 
 module PradLibs
   class Builder
-    def initialize dictionary, template_pool, pull_request
-      @dict = dictionary
+    def initialize dictionary, template_pool, pull_request, slack_params
       @pool = template_pool
       @pr = pull_request
+      @pl = get_pradlibs
+
+      @dict = combine_looker_uppers dictionary
+      @slack_params = slack_params.with_indifferent_access
     end
 
     def create
-      message = create_title @pr
+      message = create_title
       setup_images
       {
         response_type: :in_channel,
@@ -29,33 +32,36 @@ module PradLibs
       }
     end
 
-    def create_title pull_request
-      word_bank = @dict.merge({
-        pr: pull_request,
-        pl: get_pradlibs(pull_request)
-      })
-      return pull_request.title unless @pool.accepts word_bank
-      CGI.unescapeHTML(@pool.generate(word_bank).to_s)
+    def create_title
+      return @pr.title unless @pool.accepts @dict
+      CGI.unescapeHTML(@pool.generate(@dict).to_s)
     end
 
     def get_image
       @images.sample
     end
 
-    def get_pradlibs pull_request
+    def get_pradlibs
       {
-        user:  pull_request.user.login,
-        repo:  pull_request.base.repo.name,
-        total: pull_request.additions + pull_request.deletions,
-        net:   pull_request.additions - pull_request.deletions,
+        user:  @pr.user.login,
+        repo:  @pr.base.repo.name,
+        total: @pr.additions + @pr.deletions,
+        net:   @pr.additions - @pr.deletions,
       }
+    end
+
+    private
+
+    def combine_looker_uppers dict
+      dict.merge({
+        pr: @pr,
+        pl: @pl
+      })
     end
 
     def setup_images
       types = %w(animals architecture nature people tech)
       @images = types.collect { |c| "http://placeimg.com/75/75/#{c}.png" }
     end
-
-    private :setup_images
   end
 end
