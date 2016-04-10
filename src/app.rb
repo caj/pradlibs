@@ -11,6 +11,8 @@ module PradLibs
       content_type :json
       status 200
 
+      # TODO: SLACK TOKEN AUTH
+
       begin
         pr_only = (params[:command] || '').downcase == "/pr"
 
@@ -23,9 +25,9 @@ module PradLibs
 
       begin
         @mb = if pr_only
-                PullRequestTemplateBuilder.new(@args.pr)
+                PullRequestTemplateBuilder.new(@args.pr, params)
               else
-                MadlibsBuilder.new(@args.dictionary, @args.templates, @args.pr)
+                MadlibsBuilder.new(@args.dictionary, @args.templates, @args.pr, params)
               end
         message = @mb.create
         message.to_json

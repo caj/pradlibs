@@ -4,6 +4,19 @@ require 'octokit'
 module PradLibs
   describe Builder do
     good_url = "https://github.com/caj/pradlibs/pull/2"
+    params =
+      {
+        token:       "example token",
+        team_id:     "T0000",
+        team_domain: "example domain",
+        channel_id:   "C0000000000",
+        channel_name: "code_review",
+        user_id:      "U0000000000",
+        user_name:    "User",
+        command:      "/buzz",
+        text:         good_url,
+        response_url: "www.example.com"
+      }
 
     test_dict = Dictionary.new({ testing: "success!" })
     test_pool = TemplatePool.new ["Testing status: {{testing}}"]
@@ -16,7 +29,7 @@ module PradLibs
     end
 
     before do
-      @mb = Builder.new(test_dict, test_pool, @pr)
+      @mb = Builder.new(test_dict, test_pool, @pr, params)
     end
 
     describe '#create' do
@@ -84,7 +97,7 @@ module PradLibs
     describe '#create_title' do
       context 'when the pool accepts' do
         it 'gets a title from the pool' do
-          expect(@mb.create_title @pr).to match /success!/i
+          expect(@mb.create_title).to match /success!/i
         end
       end
 
@@ -95,13 +108,13 @@ module PradLibs
 
         it 'uses the pr title' do
           expect(test_pool).to receive(:accepts).at_least(:once).and_return false
-          expect(@mb.create_title @pr).to eq "DON'T MERGE ME"
+          expect(@mb.create_title).to eq "DON'T MERGE ME"
         end
       end
     end
 
     describe '#get_pradlibs' do
-      let(:pl) { @mb.get_pradlibs @pr }
+      let(:pl) { @mb.get_pradlibs }
       it 'returns a hash with some meta parameters' do
         expect(pl[:user]).to be @pr.user.login
         expect(pl[:repo]).to be @pr.base.repo.name
