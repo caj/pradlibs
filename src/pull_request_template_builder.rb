@@ -2,21 +2,24 @@ require_relative 'builder'
 
 module PradLibs
   class PullRequestTemplateBuilder < Builder
-    def initialize pr
-      @dict = Dictionary.new
+    def initialize pull_request, slack_params
       @pool = PradLibs.load_template_file(File.join(PRADLIBS_TPLS, "pr_template/pr_template.yml"))
-      @pr = pr
+      @pr = pull_request
+      @pl = get_pradlibs
+
+      @dict = combine_looker_uppers Dictionary.new
+      @slack_params = slack_params.with_indifferent_access
     end
 
     def create
-      message = create_title @pr
+      message = create_title
       {
         "response_type": :in_channel,
         "attachments": [
           {
-            "pretext": "#{@dict.pl[:user]} requests code review.",
+            "pretext": "#{@slack_params[:user_name]} requests code review for a PR in the #{@pl[:repo]} repository. <!here>",
             "fallback": "Purpose\n#{purpose}\n\nImplementation\n#{implementation}",
-            "title": @pr.title,
+            "title": "#{@pr.title} (+#{@pr.additions} / -#{@pr.deletions})",
             "title_link": @pr.html_url,
             "text": message,
             "color": "#F35A00",
@@ -26,14 +29,12 @@ module PradLibs
       }
     end
 
-    def create_title pull_request
-      @dict = @dict.merge({
+    def combine_looker_uppers dict
+      dict.merge({
         prt: prt,
-        pl: get_pradlibs(pull_request),
+        pl: @pl,
         pr: @pr
       })
-
-      super
     end
 
     def prt
