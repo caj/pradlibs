@@ -14,7 +14,9 @@ module PradLibs
     def create
       message = create_title
       squads_matched = match_squads(@pr.body)
-      message << "*Notifications*\n#{squads_matched.join("\n")}"
+      if !squads_matched.empty?
+        message << "*Notifications*\n#{squads_matched.join("\n")}"
+      end
       {
         "response_type": :in_channel,
         "attachments": [
