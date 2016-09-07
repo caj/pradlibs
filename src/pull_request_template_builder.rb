@@ -37,7 +37,7 @@ module PradLibs
       to_notify = []
       pr_body = pr_body.gsub("\r", "")
       pr_body.split("\n").each do |line|
-        matches = line.match(/@usertesting\/(.+)/m)
+        matches = line.match(/@usertesting\/(\S+)/m)
         next if matches.nil? || matches.size <= 1
         github_team_name = matches[1]
         slack_var = slack_user_groups.get_slack_var(github_team_name)
