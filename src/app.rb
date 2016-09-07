@@ -31,7 +31,9 @@ module PradLibs
               end
         message = @mb.create
         message.to_json
-      rescue
+      rescue => e
+        puts "Error during processing: #{$!}"
+        puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
         @args.usage
       end
     end
