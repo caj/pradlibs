@@ -13,6 +13,12 @@ module PradLibs
 
     def create
       message = create_title
+      teams = get_teams
+      if !teams.empty?
+        slack_user_groups = SlackUserGroups.new
+        teams = teams.map { |t| slack_user_groups.get_slack_var(t) }.compact
+        message << "*Notifications*\n#{teams.join("\n")}"
+      end
       {
         "response_type": :in_channel,
         "attachments": [
@@ -27,6 +33,16 @@ module PradLibs
           }
         ]
       }
+    end
+
+    def get_teams
+      teams = []
+      @pr.body.gsub("\r", "").split("\n").each do |line|
+        matches = line.match(/@usertesting\/(\S+)/m)
+        next if matches.nil? || matches.size < 1
+        teams << matches[1]
+      end
+      teams
     end
 
     def combine_looker_uppers dict

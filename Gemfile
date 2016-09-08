@@ -11,6 +11,11 @@ gem 'mustache'
 gem 'verbs'
 gem 'activesupport'
 gem 'octokit', '~> 4.0'
-gem 'rspec'
 gem 'simplecov'
 gem 'pry'
+gem 'redis'
+
+group :test do
+  gem "rspec"
+  gem "fakeredis", :require => "fakeredis/rspec"
+end
