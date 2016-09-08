@@ -5,9 +5,6 @@ module PradLibs
   describe SlackUserGroups do
     before :each do
       @sug = SlackUserGroups.new
-      # @sug.instance_variable_set :@REDIS, @REDIS
-
-      # @REDIS = Redis.new
       Redis.new.hset 'SlackUserGroups', 'fake-team', '<!subteam^S12345678|faketeam>'
     end
 
