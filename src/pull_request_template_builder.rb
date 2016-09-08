@@ -13,8 +13,9 @@ module PradLibs
 
     def create
       message = create_title
-      squads_matched = match_squads(@pr.body)
+      squads_matched = match_squads
       if !squads_matched.empty?
+        puts squads_matched
         message << "*Notifications*\n#{squads_matched.join("\n")}"
       end
       {
@@ -33,14 +34,15 @@ module PradLibs
       }
     end
 
-    def match_squads(pr_body)
+    def match_squads
       # Do fuzzy matching
-      slack_user_groups = SlackUserGroups.new()
+      pr_body = @pr.body
+      slack_user_groups = SlackUserGroups.new
       to_notify = []
       pr_body = pr_body.gsub("\r", "")
       pr_body.split("\n").each do |line|
         matches = line.match(/@usertesting\/(\S+)/m)
-        next if matches.nil? || matches.size <= 1
+        next if matches.nil? || matches.size < 1
         github_team_name = matches[1]
         slack_var = slack_user_groups.get_slack_var(github_team_name)
         to_notify << slack_var
