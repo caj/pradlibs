@@ -13,10 +13,11 @@ module PradLibs
 
     def create
       message = create_title
-      squads_matched = match_squads
-      if !squads_matched.empty?
-        puts squads_matched
-        message << "*Notifications*\n#{squads_matched.join("\n")}"
+      teams = get_teams
+      if !teams.empty?
+        slack_user_groups = SlackUserGroups.new
+        teams = teams.map { |t| slack_user_groups.get_slack_var(t) }.compact
+        message << "*Notifications*\n#{teams.join("\n")}"
       end
       {
         "response_type": :in_channel,
@@ -34,20 +35,14 @@ module PradLibs
       }
     end
 
-    def match_squads
-      # Do fuzzy matching
-      pr_body = @pr.body
-      slack_user_groups = SlackUserGroups.new
-      to_notify = []
-      pr_body = pr_body.gsub("\r", "")
-      pr_body.split("\n").each do |line|
+    def get_teams
+      teams = []
+      @pr.body.gsub("\r", "").split("\n").each do |line|
         matches = line.match(/@usertesting\/(\S+)/m)
         next if matches.nil? || matches.size < 1
-        github_team_name = matches[1]
-        slack_var = slack_user_groups.get_slack_var(github_team_name)
-        to_notify << slack_var
+        teams << matches[1]
       end
-      to_notify
+      teams
     end
 
     def combine_looker_uppers dict
