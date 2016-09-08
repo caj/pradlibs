@@ -33,7 +33,10 @@ module PradLibs
         we implemented it like this!
 
         # Trello Card
-        and it was related to a link like https://trello.com/card-blah"
+        and it was related to a link like https://trello.com/card-blah
+
+        # Notifications
+        @usertesting/fake-team This team is so awesome it doesn't exist"
       )
     end
 
@@ -64,6 +67,12 @@ module PradLibs
     describe '#has_trello_card?' do
       it 'is true if #trello_card_url parsed' do
         expect(subject.has_trello_card?).to be true
+      end
+    end
+
+    describe '#get_teams' do
+      it 'returns the teams matched' do
+        expect(subject.get_teams).to eq ['fake-team']
       end
     end
   end
