@@ -8,14 +8,14 @@ module PradLibs
       redis_url = ENV['REDISTOGO_URL']
       if !redis_url.nil?
         uri = URI.parse(redis_url)
-        @REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+        @redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
       else
-        @REDIS = Redis.new
+        @redis = Redis.new
       end
     end
 
     def get_slack_var(github_team_name)
-      @REDIS.hget(REDIS_KEY, github_team_name)
+      @redis.hget(REDIS_KEY, github_team_name)
     end
   end
 end
